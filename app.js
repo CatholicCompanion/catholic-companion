@@ -141,7 +141,7 @@ const MASS_PARTS=[
 ];
 
 /* ── STATE ─────────────────────────────────────────────────────────── */
-let curDay=2, depth='growing', pDepth='growing';
+let curDay=new Date().getDay(), depth='growing', pDepth='growing';
 let curReading=0, isPlaying=false, isMuted=false;
 let progTimer=null, progPct=0;
 let selVoice=0, synth=window.speechSynthesis;
