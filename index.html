@@ -103,12 +103,12 @@ body{background:var(--vel);color:var(--ink);font-family:'EB Garamond',Georgia,se
 
 /* ══ NAV ══════════════════════════════════════════════════════════════ */
 nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,150,58,.4)}
-.nav-inner{max-width:var(--mw);margin:0 auto;padding:0 .75rem;height:48px;display:flex;align-items:center;justify-content:space-between;gap:.35rem}
+.nav-inner{max-width:var(--mw);margin:0 auto;padding:0 1rem;height:52px;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
 .nav-brand{display:flex;align-items:center;gap:.45rem;text-decoration:none;flex-shrink:0;cursor:pointer}
-.nav-brand-text{font-family:'Cinzel',serif;font-size:.75rem;color:var(--gp);letter-spacing:.04em}
+.nav-brand-text{font-family:'Cinzel',serif;font-size:.82rem;color:var(--gp);letter-spacing:.05em}
 .nav-tabs{display:flex;gap:0;align-items:stretch;height:100%;overflow-x:auto;scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:rgba(232,200,112,.5);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.05em;padding:0 .5rem;cursor:pointer;transition:all .18s;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:rgba(232,200,112,.5);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.07em;padding:0 .65rem;cursor:pointer;transition:all .18s;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
 .nav-tab:hover{color:var(--gp)}
 .nav-tab.active{color:var(--gp);border-bottom-color:var(--gt)}
 .nav-tab.live-tab{color:rgba(204,0,0,.8)}
@@ -184,9 +184,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .rtab.psalm .rtr{font-style:italic}
 
 .vplayer{position:relative;height:42vh;max-height:380px;min-height:200px;background:#000;overflow:hidden}
-.vplayer:-webkit-full-screen{height:100vh;max-height:100vh}
-.vplayer:fullscreen{height:100vh;max-height:100vh}
-.voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:transparent}
+.voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(160deg,rgba(21,8,0,0.85),rgba(8,3,0,0.85))}
 .vo-ref{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gt);margin-bottom:.6rem}
 .vo-response{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(201,150,58,.9);margin-bottom:.4rem;font-style:italic}
 .vo-text{font-family:'EB Garamond',serif;font-size:clamp(.9rem,2.2vw,1.15rem);color:rgba(245,232,204,.92);text-align:center;line-height:1.88;font-style:italic;max-width:520px;animation:fadeword 10s ease infinite}
@@ -359,7 +357,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 
 /* animations */
 @keyframes rI{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse-art{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.45;transform:scale(1.08)}}
+@keyframes pulse-art{0%,100%{opacity:.2;transform:translate(-50%,-50%) scale(1)}50%{opacity:.5;transform:translate(-50%,-50%) scale(1.08)}}
 .ri{animation:rI .28s ease both}.ri2{animation:rI .28s .06s ease both}.ri3{animation:rI .28s .12s ease both}.ri4{animation:rI .28s .18s ease both}
 
 /* ══ DEPTH MODAL ══════════════════════════════════════════════════════ */
@@ -401,13 +399,12 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 <div id="tts-widget">
   <div id="tts-panel">
     <div class="tts-title">Text-to-speech · choose a voice</div>
-    <div class="tts-title" style="margin-bottom:.3rem;font-size:.6rem">Voices depend on your device</div>
     <div class="tts-voices" id="tts-voices">
-      <button class="tts-voice-btn active" data-voice="0" onclick="selectVoice(0,this)"><span class="tts-voice-icon">🎙</span>Male voice</button>
-      <button class="tts-voice-btn" data-voice="1" onclick="selectVoice(1,this)"><span class="tts-voice-icon">🎙</span>Female voice</button>
-      <button class="tts-voice-btn" data-voice="2" onclick="selectVoice(2,this)"><span class="tts-voice-icon">🎙</span>Male · slower</button>
+      <button class="tts-voice-btn active" data-voice="0" onclick="selectVoice(0,this)"><span class="tts-voice-icon">🎙</span>Male · standard</button>
+      <button class="tts-voice-btn" data-voice="1" onclick="selectVoice(1,this)"><span class="tts-voice-icon">🎙</span>Female · standard</button>
+      <button class="tts-voice-btn" data-voice="2" onclick="selectVoice(2,this)"><span class="tts-voice-icon">🎙</span>Male · elder</button>
       <button class="tts-voice-btn" data-voice="3" onclick="selectVoice(3,this)"><span class="tts-voice-icon">🎙</span>Female · warm</button>
-      <button class="tts-voice-btn" data-voice="4" onclick="selectVoice(4,this)"><span class="tts-voice-icon">🎙</span>Young / child</button>
+      <button class="tts-voice-btn" data-voice="4" onclick="selectVoice(4,this)"><span class="tts-voice-icon">🎙</span>Young · clear</button>
     </div>
     <div class="tts-controls">
       <button class="tts-ctrl" onclick="ttsRead()">▶ Read page</button>
@@ -433,7 +430,6 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('week')">Week</button>
       <button class="nav-tab" onclick="showPage('mass')">The Mass</button>
       <button class="nav-tab live-tab" onclick="showPage('live')"><span class="live-pulse"></span>Live Mass</button>
-      <button class="nav-tab" onclick="showPage('office')">Divine Office</button>
       <button class="nav-tab" onclick="showPage('adoration')">Adoration</button>
       <button class="nav-tab" onclick="showPage('community')">Community</button>
       <button class="nav-tab" onclick="showPage('children')">Children</button>
@@ -446,9 +442,10 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('library')">Library</button>
       <button class="nav-tab" onclick="showPage('store')">Store</button>
       <button class="nav-tab" onclick="showPage('qa')">Q&amp;A</button>
-      <button class="nav-tab" onclick="showPage('about')">About</button>
     </div>
-    <button class="depth-btn" onclick="openDepth()" id="depth-btn" style="flex-shrink:0;margin-left:.35rem">Growing ▾</button>
+    <div class="nav-right">
+      <button class="depth-btn" onclick="openDepth()" id="depth-btn">Growing ▾</button>
+    </div>
   </div>
 </nav>
 
@@ -458,8 +455,8 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
     <div class="hero-inner">
       <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);flex-shrink:0;display:inline-block"></span><span id="h-season">Ordinary Time · Week XIV</span></div>
-      <div class="hero-date" id="h-date">Saturday, 28 March 2026</div>
-      <div class="hero-sub" id="h-liturgy">Saturday Memorial of Our Lady · Liturgical colour: White</div>
+      <div class="hero-date" id="h-date">Loading...</div>
+      <div class="hero-sub" id="h-liturgy">Feria · Liturgical colour: Green</div>
     </div>
   </div>
 
@@ -468,23 +465,18 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="reading-tabs" id="reading-tabs"></div>
     <div class="vplayer">
       <div class="voverlay" id="voverlay">
-        <!-- Animated background -->
-        <div id="vid-bg" style="position:absolute;inset:0;overflow:hidden;z-index:0">
-          <div id="vid-bg-inner" style="position:absolute;inset:0;background:linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400);transition:background 1.5s ease"></div>
-          <!-- Animated light rays -->
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0,transparent 40px,rgba(201,150,58,0.03) 40px,rgba(201,150,58,0.03) 41px);pointer-events:none"></div>
-          <!-- Central crucifix glow -->
-          <div id="vid-glow" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.25) 0%,rgba(139,26,14,0.15) 40%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;pointer-events:none"></div>
-          <!-- Crucifix watermark -->
-          <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.25;animation:pulse-art 4s ease-in-out infinite" width="60" height="84" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
-        </div>
-        <!-- Reading content overlay -->
-        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem;text-align:center">
-          <div class="vo-ref" id="vo-ref" style="margin-bottom:.6rem;font-size:.72rem">Saturday Memorial of Our Lady</div>
+        <!-- Animated background layers -->
+        <div id="vid-bg-inner" style="position:absolute;inset:0;background:linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400);transition:background 1.5s ease;z-index:0"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0,transparent 40px,rgba(201,150,58,0.04) 40px,rgba(201,150,58,0.04) 41px);z-index:1;pointer-events:none"></div>
+        <div style="position:absolute;top:50%;left:50%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.22) 0%,rgba(139,26,14,0.12) 45%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none"></div>
+        <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.22;animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none" width="70" height="98" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
+        <!-- Reading content -->
+        <div style="position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem;text-align:center">
+          <div class="vo-ref" id="vo-ref" style="margin-bottom:.6rem">Today's Reading</div>
           <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;border:1px solid rgba(201,150,58,.3);padding:.2rem .75rem;border-radius:20px"></div>
-          <div class="vo-text" id="vo-text" style="font-size:clamp(.88rem,2vw,1.08rem);max-width:560px">Click a reading tab above to begin</div>
+          <div class="vo-text" id="vo-text" style="font-size:clamp(.88rem,2vw,1.08rem);max-width:520px">Click a reading tab above to begin</div>
         </div>
-        <div class="vo-ai-lbl" style="font-size:.55rem">Sacred art illustration · click ▶ to hear aloud · ⛶ for fullscreen</div>
+        <div class="vo-ai-lbl">Sacred art · ▶ to hear aloud · ⛶ fullscreen</div>
       </div>
       <video id="rv" style="display:none" playsinline></video>
     </div>
@@ -494,6 +486,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <div class="vprog" onclick="seekTo(event)"><div class="vprog-fill" id="prog-fill" style="width:0%"></div></div>
       <span class="vtime" id="vtime">0:00 / 2:30</span>
       <button class="vnext" onclick="nextReading()">Next →</button>
+        <button class="vctrl" onclick="toggleFullscreen()" id="fs-btn" title="Fullscreen">⛶</button>
     </div>
     <div class="vshare">
       <span class="vsbl">Share:</span>
@@ -556,40 +549,6 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="sv-bar"><span class="sv-title" id="sv-title">Live Mass</span><button class="sv-close" onclick="closeStream()">✕ Close</button></div>
   </div>
   <div class="stream-grid" id="stream-grid"></div>
-</div>
-
-<!-- ════════════════════════════════════ PAGE: DIVINE OFFICE ════════════════════════════ -->
-<div class="page" id="page-office">
-  <div class="hero"><svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
-    <div class="hero-inner">
-      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block"></span>Liturgy of the Hours</div>
-      <div class="hero-date">The Divine Office</div>
-      <div class="hero-sub">Office of Readings · Morning Prayer · Daytime Prayer · Evening Prayer · Night Prayer</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="slabel">The Church prays at every hour</div>
-    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.1rem">The Liturgy of the Hours is the official daily prayer of the Catholic Church. When you pray the Office, you are praying with the entire Church — with monks in monasteries, priests in their studies, and the faithful on buses and trains around the world. You are never praying alone.</p>
-    <div class="pull-quote">"Seven times a day I praise you." — Psalm 119:164 · The Church has structured prayer around the seven canonical hours since the earliest centuries.</div>
-    <div class="slabel" style="margin-top:1.25rem">Today's hours — Saturday, 28 March 2026</div>
-    <div id="office-hours"></div>
-    <div class="slabel" style="margin-top:1.25rem">Listen to the Office</div>
-    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:.85rem">
-      <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink);margin-bottom:.5rem">Audio options</div>
-      <div class="share-strip">
-        <button class="sbtn" onclick="window.open('https://www.magnificat.net/audio','_blank')">🎵 Magnificat Audio</button>
-        <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📿 DivineOffice.org</button>
-        <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📖 iBreviary</button>
-        <button class="sbtn" onclick="ttsRead()">🔊 Read this page aloud</button>
-      </div>
-      <p style="font-size:.82rem;color:var(--if);font-style:italic;margin-top:.65rem;line-height:1.6">Full integrated audio Office with all hours, all psalms, and proper antiphons for every day of the liturgical year is coming in Stage 2. Until then, the links above provide the complete Office.</p>
-    </div>
-    <div class="prayer-panel">
-      <svg class="pp-cx" width="48" height="67" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
-      <div class="p-lbl">Night Prayer — Compline</div>
-      <div class="p-txt">Into your hands, Lord, I commend my spirit.<br><em>Into your hands, Lord, I commend my spirit.</em><br><br>You have redeemed us, Lord God of truth.<br><em>Into your hands, Lord, I commend my spirit.</em><br><br>May almighty God grant us a restful night and a peaceful death. Amen.</div>
-    </div>
-  </div>
 </div>
 
 <!-- ════════════════════════════════════ PAGE: ADORATION ════════════════════════════════ -->
@@ -823,8 +782,8 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   <div class="modal" style="max-width:560px">
     <div class="modal-hd"><h2>Search Catholic Companion</h2><button class="modal-close" onclick="closeSearch()">✕</button></div>
     <div class="modal-bd">
-      <input type="text" id="search-input" placeholder="Search sections, saints, readings..." oninput="doSearch(this.value)"
-        style="width:100%;border:1px solid var(--vs);border-radius:8px;padding:.65rem 1rem;font-family:'EB Garamond',serif;font-size:1rem;color:var(--is);background:var(--vel);margin-bottom:.85rem">
+      <input type="text" id="search-input" placeholder="Search sections, readings, saints..." oninput="doSearch(this.value)"
+        style="width:100%;border:1px solid var(--vs);border-radius:8px;padding:.65rem 1rem;font-family:'EB Garamond',serif;font-size:1rem;color:var(--is);background:var(--vel);margin-bottom:.85rem;box-sizing:border-box">
       <div id="search-results"></div>
     </div>
   </div>
@@ -838,48 +797,6 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <p style="font-size:.86rem;color:var(--im);margin-bottom:.85rem;line-height:1.6">See what each level includes before choosing. Change this any time.</p>
       <div id="depth-cards"></div>
       <button class="modal-confirm" onclick="confirmDepth()">Confirm — begin at this level</button>
-    </div>
-  </div>
-</div>
-
-<!-- ════ PAGE: ABOUT ════ -->
-<div class="page" id="page-about">
-  <div class="hero"><svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
-    <div class="hero-inner">
-      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block"></span>Our vision</div>
-      <div class="hero-date">What Catholic Companion Is</div>
-      <div class="hero-sub">And what it is becoming</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="slabel">The vision</div>
-    <div class="pull-quote">"The digital continent is a mission field, and the Church is called to be there. What is needed is not another Catholic app — it is a Catholic digital city: a place where every believer, seeker, and curious soul can find, learn, grow, and share the Good News."</div>
-    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.1rem">Catholic Companion is a richly integrated digital platform — web, mobile, audio, and video — built to serve the global Catholic Church and to reach those outside her walls. It is not one more app in a crowded market. It is the ecosystem that ties together what exists, fills what is missing, and opens a door that no current platform has thought to build.</p>
-    <div class="slabel">What we have now</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-bottom:1.25rem" id="about-features"></div>
-    <div class="slabel">What is coming</div>
-    <div class="card">
-      <div class="card-ref">Stage 2 — Months 2–3</div>
-      <div style="font-size:.95rem;color:var(--is);line-height:1.78">AI-generated video readings · USCCB lectionary auto-population · Faithful Plus subscription (£3.99/mo) · Parish editorial tools · PWA install · Full integrated Divine Office audio · Google Search Console indexing</div>
-    </div>
-    <div class="card">
-      <div class="card-ref">Stage 3 — Months 4–6</div>
-      <div style="font-size:.95rem;color:var(--is);line-height:1.78">AI Apologetics Bot · Online Retreats · Pilgrimage & Events booking · Catholic Social Network · Vocations directory · 50+ languages · The Behold evangelisation sub-brand</div>
-    </div>
-    <div class="slabel" style="margin-top:1.25rem">Contact</div>
-    <div class="card">
-      <div class="card-ref">Get in touch</div>
-      <div style="font-size:.95rem;color:var(--is);line-height:1.9">
-        General enquiries: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="771f121b1b18371619031f18190e1f065914181a">[email&#160;protected]</a></strong><br>
-        Contribute an article: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c1f1312080e151e0908130e0f3c1d120814131205140d521f1311">[email&#160;protected]</a></strong><br>
-        Parish partnerships: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0878697a617b606d7b4869667c606766716079266b6765">[email&#160;protected]</a></strong><br>
-        Vocations & formation: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7d1d8c5dad6c3ded8d9f7d6d9c3dfd8d9cedfc699d4d8da">[email&#160;protected]</a></strong>
-      </div>
-    </div>
-    <div class="prayer-panel" style="margin-top:1.25rem">
-      <svg class="pp-cx" width="48" height="67" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
-      <div class="p-lbl">Built in Week 7 of 52 Startups in 52 Weeks</div>
-      <div class="p-txt" style="font-size:.88rem">Catholic Companion was built by a solo Catholic founder in seven days as part of the 52 Startups in 52 Weeks challenge. It launched live on 27 March 2026 at companion.anthonyhq.com. The build continues every week.</div>
     </div>
   </div>
 </div>
@@ -903,8 +820,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
+<script>
 /* ── DATA ──────────────────────────────────────────────────────────── */
 const NEWS_ITEMS=[
   'Pope Leo XIV leads Angelus prayer — reflects on the Parable of the Sower',
@@ -1076,20 +992,15 @@ window.addEventListener('DOMContentLoaded',()=>{
   buildQAContent();
   buildDepthCards();
   buildCommunityContent('testimonies');
-  buildOfficeHours();
-  buildAboutFeatures();
   checkTTSSupport();
 });
 
 /* ── DATE ──────────────────────────────────────────────────────────── */
 function setLiveDate(){
-  try {
-    const now=new Date();
-    const dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const mn=['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const el=document.getElementById('h-date');
-    if(el) el.textContent=dn[now.getDay()]+', '+now.getDate()+' '+mn[now.getMonth()]+' '+now.getFullYear();
-  } catch(e) { console.log('date error',e); }
+  const now=new Date();
+  const dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const mn=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('h-date').textContent=dn[now.getDay()]+', '+now.getDate()+' '+mn[now.getMonth()]+' '+now.getFullYear();
 }
 
 /* ── TICKER ────────────────────────────────────────────────────────── */
@@ -1104,7 +1015,7 @@ function handleNewsClick(){showPage('news');}
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  const pageOrder=['today','week','mass','live','office','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa','about'];
+  const pageOrder=['today','week','mass','live','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa'];
   const idx=pageOrder.indexOf(id);
   document.querySelectorAll('.nav-tab').forEach((b,i)=>b.classList.toggle('active',i===idx));
   document.querySelectorAll('.bn-btn').forEach((b,i)=>{
@@ -1523,87 +1434,6 @@ function buildStoreGrid(){
 }
 
 /* ── Q&A ───────────────────────────────────────────────────────────── */
-function buildAboutFeatures(){
-  const features=[
-    {icon:'📖',name:'Daily Readings',desc:'All readings with video player'},
-    {icon:'📅',name:'Week Narrative',desc:'Seven days as one story'},
-    {icon:'✝',name:'The Mass',desc:'All 14 parts explained'},
-    {icon:'📺',name:'Live Mass',desc:'6 streams worldwide'},
-    {icon:'🕯',name:'Adoration',desc:'Perpetual streaming'},
-    {icon:'🙏',name:'Divine Office',desc:'All 5 hours of prayer'},
-    {icon:'👥',name:'Community',desc:'Testimonies & prayer'},
-    {icon:'👶',name:'Children',desc:'Stories & saints'},
-    {icon:'📚',name:'Formation',desc:'5 complete paths'},
-    {icon:'🎙',name:'Podcasts',desc:'Top Catholic audio'},
-    {icon:'❓',name:'Seeker Journey',desc:'Honest answers'},
-    {icon:'⛪',name:'Vocations',desc:'Discernment tools'},
-    {icon:'📰',name:'News Room',desc:'Verified Catholic news'},
-    {icon:'✍',name:'Articles',desc:'Curated writing'},
-    {icon:'📜',name:'Library',desc:'Typology & catechism'},
-    {icon:'🛍',name:'Store',desc:'Catholic goods'},
-    {icon:'💬',name:'Q&A',desc:'Theological answers'},
-  ];
-  const el=document.getElementById('about-features');
-  if(!el)return;
-  el.innerHTML=features.map(f=>`
-    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);padding:.85rem;display:flex;flex-direction:column;gap:.25rem">
-      <span style="font-size:1.3rem">${f.icon}</span>
-      <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink)">${f.name}</div>
-      <div style="font-size:.78rem;color:var(--if)">${f.desc}</div>
-    </div>`).join('');
-}
-
-function buildOfficeHours(){
-  const hours=[
-    {name:"Office of Readings",latin:"Matutinum",time:"Any time",icon:"🌙",
-     desc:"A longer reading from Scripture and a patristic commentary. The heart of monastic night prayer, now available to all the faithful at any hour.",
-     psalm:'Psalm 94 — "Come, ring out our joy to the Lord"',
-     reading:"From today's Scripture — Jeremiah 11:18-20",
-     patristic:'From St. Augustine: "Our heart is restless until it rests in Thee."'},
-    {name:"Morning Prayer",latin:"Lauds",time:"On waking",icon:"🌅",
-     desc:"The Church greeting to the new day. The psalms of praise open our hearts before the day makes its demands.",
-     psalm:'Psalm 62 — "O God, you are my God; I seek you"',
-     reading:"Isaiah 66:1-2",patristic:""},
-    {name:"Daytime Prayer",latin:"Terce, Sext, None",time:"Mid-morning · Midday · Mid-afternoon",icon:"☀️",
-     desc:"Three brief pauses through the working day — each taking only five minutes. A way of bringing every hour of work before God.",
-     psalm:"Psalm 119 — selections on God's word and love",
-     reading:"A short verse from Scripture appropriate to each hour",patristic:""},
-    {name:"Evening Prayer",latin:"Vespers",time:"Evening",icon:"🌆",
-     desc:"The great prayer of thanksgiving for the day. The Magnificat — Our Lady's song of praise — is sung at Vespers every single day.",
-     psalm:'Psalm 141 — "Let my prayer arise before you like incense"',
-     reading:"1 Peter 5:8-9",patristic:""},
-    {name:"Night Prayer",latin:"Compline",time:"Before sleep",icon:"🌙",
-     desc:"The final prayer of the day. Brief, calm, and beautiful. Ends with the Salve Regina.",
-     psalm:'Psalm 90 — "He who dwells in the shelter of the Most High"',
-     reading:"Into your hands, Lord, I commend my spirit",patristic:""},
-  ];
-  const el=document.getElementById("office-hours");
-  if(!el)return;
-  el.innerHTML=hours.map((h,i)=>`
-    <div class="acc-item" id="oh${i}">
-      <div class="acc-head" onclick="tog('oh${i}')">
-        <span style="font-size:1.1rem;min-width:1.8rem">${h.icon}</span>
-        <div style="flex:1">
-          <div class="acc-title">${h.name} <span style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--if);font-style:italic;letter-spacing:.06em;margin-left:.5rem">${h.latin}</span></div>
-          <div style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--gld);letter-spacing:.07em;text-transform:uppercase">${h.time}</div>
-        </div>
-        <span class="acc-arr">›</span>
-      </div>
-      <div class="acc-body">
-        <p>${h.desc}</p>
-        <div class="acc-scripture"><strong>Psalm:</strong> ${h.psalm}</div>
-        <div class="acc-scripture" style="margin-top:.5rem"><strong>Reading:</strong> ${h.reading}</div>
-        ${h.patristic?`<div class="acc-scripture" style="margin-top:.5rem;border-color:var(--gld);background:rgba(201,150,58,.06)">${h.patristic}</div>`:""}
-        <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
-          <button class="sbtn" onclick="ttsRead()">🔊 Listen</button>
-          <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">Full text →</button>
-        </div>
-      </div>
-    </div>`).join("");
-}
-
-
-
 function buildQAContent(){
   const qas=[
     {c:"Doctrine",q:"Is the Pope infallible about everything he says?",a:"<p>No. Papal infallibility is precisely defined (Vatican I, 1870) — it applies only when the Pope speaks <em>ex cathedra</em>, deliberately defining a doctrine of faith or morals as binding on the whole Church. This has happened very rarely: the Immaculate Conception (1854) and the Assumption of Our Lady (1950) are the clearest modern examples. Most of what the Pope says does not qualify, though it deserves the respect owed to the Vicar of Christ.</p>"},
@@ -1661,26 +1491,16 @@ function selectVoice(idx,btn){
 function getVoiceForIdx(idx){
   const voices=synth.getVoices();
   if(!voices.length)return null;
-  const en=voices.filter(v=>v.lang.startsWith('en'));
-  const pool=en.length?en:voices;
-  // Sort to prefer local/natural voices over remote
-  const local=pool.filter(v=>v.localService);
-  const all=local.length?local:pool;
-  // Voice preference strategies
-  const male=all.filter(v=>/male|man|james|george|david|daniel|thomas|arthur|ryan/i.test(v.name)&&!/female/i.test(v.name));
-  const female=all.filter(v=>/female|woman|karen|samantha|victoria|lisa|alice|emily|kate|fiona/i.test(v.name));
-  const slow=all.filter(v=>/slow|elder|senior|albert|fred/i.test(v.name));
-  const warm=female.length?female:all;
-  const young=all.filter(v=>/junior|child|young|zoe|moira/i.test(v.name));
-  const picks=[
-    male.length?male[0]:all[0],
-    female.length?female[0]:all[Math.min(1,all.length-1)],
-    slow.length?slow[0]:(male.length>1?male[1]:all[0]),
-    warm.length?warm[0]:all[0],
-    young.length?young[0]:all[Math.min(all.length-1,all.length-1)]
+  // Find voices by gender/type preference
+  const prefs=[
+    v=>v.name.toLowerCase().includes('male')&&!v.name.toLowerCase().includes('female'),
+    v=>v.name.toLowerCase().includes('female'),
+    v=>v.name.toLowerCase().includes('george')||v.name.toLowerCase().includes('james'),
+    v=>v.name.toLowerCase().includes('karen')||v.name.toLowerCase().includes('victoria')||v.name.toLowerCase().includes('samantha'),
+    v=>v.name.toLowerCase().includes('daniel')
   ];
-  const v=picks[idx]||all[0];
-  return v;
+  const match=voices.find(prefs[idx]||prefs[0]);
+  return match||voices[0];
 }
 function ttsRead(){
   if(isSpeaking){ttsStop();}
@@ -1692,12 +1512,8 @@ function ttsRead(){
   textNodes.forEach(n=>{if(n.offsetParent!==null)text+=n.textContent.trim()+'. ';});
   if(!text.trim()){alert('No readable text found on this page.');return;}
   const utt=new SpeechSynthesisUtterance(text.substring(0,5000));
-  // Rate and pitch per voice type for smoother delivery
-  const rateMap=[0.88,0.9,0.78,0.85,0.95];
-  const pitchMap=[0.95,1.05,0.85,1.0,1.15];
-  utt.rate=rateMap[selVoice]||0.88;
-  utt.pitch=pitchMap[selVoice]||1.0;
-  utt.volume=1.0;
+  utt.rate=0.9;
+  utt.pitch=1;
   const voice=getVoiceForIdx(selVoice);
   if(voice)utt.voice=voice;
   utt.onstart=()=>{isSpeaking=true;document.getElementById('tts-btn').classList.add('speaking');};
@@ -1712,78 +1528,58 @@ function ttsStop(){synth.cancel();isSpeaking=false;document.getElementById('tts-
 /* ── FULLSCREEN ────────────────────────────────────────────────────── */
 function toggleFullscreen(){
   const vp=document.querySelector('.vplayer');
-  if(!document.fullscreenElement){
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
     if(vp.requestFullscreen)vp.requestFullscreen();
     else if(vp.webkitRequestFullscreen)vp.webkitRequestFullscreen();
     document.getElementById('fs-btn').textContent='✕';
   }else{
     if(document.exitFullscreen)document.exitFullscreen();
+    else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
     document.getElementById('fs-btn').textContent='⛶';
   }
 }
-document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement)document.getElementById('fs-btn').textContent='⛶';
-});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.getElementById('fs-btn'))document.getElementById('fs-btn').textContent='⛶';});
+document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFullscreenElement&&document.getElementById('fs-btn'))document.getElementById('fs-btn').textContent='⛶';});
 
-/* ── FULLSCREEN ────────────────────────────────────────────────────── */
-function toggleFullscreen(){
-  const vp=document.querySelector('.vplayer');
-  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
-    (vp.requestFullscreen||vp.webkitRequestFullscreen||vp.mozRequestFullScreen).call(vp);
-    document.getElementById('fs-btn').textContent='✕';
-  }else{
-    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
-    document.getElementById('fs-btn').textContent='⛶';
-  }
-}
-document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.getElementById('fs-btn').textContent='⛶';});
-document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFullscreenElement)document.getElementById('fs-btn').textContent='⛶';});
-document.addEventListener('keydown',(e)=>{if(e.key==='f'||e.key==='F')toggleFullscreen();});
-
-/* ── VIDEO BACKGROUND COLOURS PER READING ─────────────────────────── */
-const readingBgs=[
-  'linear-gradient(160deg,#1a0800,#2d1505 40%,#0d0400)', /* First reading - warm */
-  'linear-gradient(160deg,#0a0d1a,#1a0d2d 40%,#050510)', /* Psalm - deep blue */
-  'linear-gradient(160deg,#1a0800,#2d0808 40%,#0d0300)', /* Second reading */
-  'linear-gradient(160deg,#0d1a0d,#0a2d0a 40%,#030d03)', /* Gospel - deep green */
-];
-function updateVideoBg(readingIdx){
-  const bg=document.getElementById('vid-bg-inner');
-  if(bg)bg.style.background=readingBgs[readingIdx]||readingBgs[0];
-}
+const VID_BGS=['linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400)','linear-gradient(160deg,#0a0d1a,#1a0d2d 40%,#050510)','linear-gradient(160deg,#1a0800,#2d0808 40%,#0d0300)','linear-gradient(160deg,#0d1a0d,#0a2d0a 40%,#030d03)'];
+function updateVideoBg(i){const bg=document.getElementById('vid-bg-inner');if(bg)bg.style.background=VID_BGS[i]||VID_BGS[0];}
 
 /* ── UTILS ─────────────────────────────────────────────────────────── */
 function tog(id){document.getElementById(id).classList.toggle('open');}
-function openSearch(){document.getElementById('search-overlay').classList.add('open');setTimeout(()=>document.getElementById('search-input').focus(),100);}
+function openSearch(){document.getElementById('search-overlay').classList.add('open');setTimeout(()=>{const el=document.getElementById('search-input');if(el)el.focus();},100);}
 function closeSearch(){document.getElementById('search-overlay').classList.remove('open');}
 function doSearch(q){
   const el=document.getElementById('search-results');
-  if(!q.trim()){el.innerHTML='';return;}
+  if(!q||!q.trim()){el.innerHTML='';return;}
   const items=[
-    {label:"Today's readings",desc:"Daily scripture — First Reading, Psalm, Gospel",page:"today"},
-    {label:"This week",desc:"The week's narrative arc and all seven days",page:"week"},
-    {label:"The Holy Mass",desc:"Every part of Mass explained from Scripture",page:"mass"},
-    {label:"Live Mass",desc:"24/7 live Mass streams worldwide",page:"live"},
-    {label:"Adoration",desc:"Perpetual Eucharistic adoration streams",page:"adoration"},
-    {label:"Community Hub",desc:"Testimonies, prayer requests, faith sharing",page:"community"},
-    {label:"Children's World",desc:"Bible stories and saint adventures for children",page:"children"},
-    {label:"Formation Paths",desc:"RCIA, Confirmation, Marriage prep, Lay ministry",page:"formation"},
-    {label:"Catholic Podcasts",desc:"Top Catholic podcasts in one place",page:"podcasts"},
-    {label:"New here?",desc:"Seeker journey — start with honest questions",page:"seeker"},
-    {label:"Vocations Centre",desc:"Discernment tools and religious life guide",page:"vocations"},
-    {label:"Catholic News Room",desc:"Verified, curated Catholic news",page:"news"},
-    {label:"Curated Articles",desc:"Theology, Scripture, spirituality from contributors",page:"articles"},
-    {label:"Library",desc:"Typology, encyclicals, catechism, devotions",page:"library"},
-    {label:"Catholic Store",desc:"Bibles, books, sacramentals, vestments, rosaries",page:"store"},
-    {label:"Q&A",desc:"Common questions answered by theologians",page:"qa"},
-    {label:"Isaiah",desc:"First Reading — Isaiah 50:4-9",page:"today"},
-    {label:"Psalm",desc:"Responsorial Psalm",page:"today"},
-    {label:"Gospel",desc:"Holy Gospel",page:"today"},
-    {label:"Rosary",desc:"Devotions section in the Library",page:"library"},
-    {label:"Confession",desc:"Sacraments section in the Library",page:"library"},
-    {label:"Saints",desc:"Saints of the day in Today's readings",page:"today"},
-    {label:"St. Oscar Romero",desc:"Saint of Tuesday — martyr, Archbishop",page:"today"},
+    {label:"Today's readings",desc:"Daily scripture for Saturday 28 March",page:"today"},
+    {label:"This week",desc:"The week narrative arc",page:"week"},
+    {label:"The Holy Mass",desc:"All 14 parts explained from Scripture",page:"mass"},
+    {label:"Live Mass",desc:"24/7 live streams worldwide",page:"live"},
+    {label:"Adoration",desc:"Perpetual Eucharistic adoration",page:"adoration"},
+    {label:"Community Hub",desc:"Testimonies, prayer requests",page:"community"},
+    {label:"Children's World",desc:"Bible stories and saint adventures",page:"children"},
+    {label:"Formation Paths",desc:"RCIA, Confirmation, Marriage prep",page:"formation"},
+    {label:"Catholic Podcasts",desc:"Top Catholic podcasts curated",page:"podcasts"},
+    {label:"New here?",desc:"Honest answers for seekers",page:"seeker"},
+    {label:"Vocations Centre",desc:"Discernment tools",page:"vocations"},
+    {label:"Catholic News Room",desc:"Verified Catholic news",page:"news"},
+    {label:"Curated Articles",desc:"Theology, Scripture, spirituality",page:"articles"},
+    {label:"Library",desc:"Typology, catechism, devotions",page:"library"},
+    {label:"Catholic Store",desc:"Bibles, books, sacramentals",page:"store"},
+    {label:"Q&A",desc:"Questions answered by theologians",page:"qa"},
   ];
   const results=items.filter(i=>i.label.toLowerCase().includes(q.toLowerCase())||i.desc.toLowerCase().includes(q.toLowerCase()));
-  if(!results.length){el.innerHTML='<p style="font-size:.9rem;color:var(--if);text-align:center;padding:1rem">No results found for "'+q+'"</p>';return;}
-  el.innerHTML=results.slice(0,8).map(r=>`<div onclick="showPage('${r.page}');closeSearch()" style="padding:.75rem .9rem;border:1px solid var(--vs);border-radius:8px;margin-bottom:.45rem;cursor:pointer;transition:border-color .12s" onmouseover="this.style.borderColor='var(--gt)'" onmouseout="this.st
+  if(!results.length){el.innerHTML='<p style="font-size:.9rem;color:var(--if);text-align:center;padding:1rem">No results found</p>';return;}
+  el.innerHTML=results.slice(0,8).map(r=>`<div onclick="showPage('${r.page}');closeSearch()" style="padding:.75rem .9rem;border:1px solid var(--vs);border-radius:8px;margin-bottom:.45rem;cursor:pointer;transition:border-color .12s" onmouseover="this.style.borderColor='var(--gt)'" onmouseout="this.style.borderColor='var(--vs)'"><div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--ink);margin-bottom:.15rem">${r.label}</div><div style="font-size:.82rem;color:var(--if)">${r.desc}</div></div>`).join('');
+}
+
+function doShare(){
+  const msg='Daily Catholic readings — '+DAYS[curDay].full;
+  if(navigator.share)navigator.share({title:'Catholic Companion',text:msg,url:window.location.href});
+  else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!'));
+  else alert('Share: '+window.location.href);
+}
+</script>
+</body>
+</html>
