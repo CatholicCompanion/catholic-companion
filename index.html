@@ -186,7 +186,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .vplayer{position:relative;height:42vh;max-height:380px;min-height:200px;background:#000;overflow:hidden}
 .vplayer:-webkit-full-screen{height:100vh;max-height:100vh}
 .vplayer:fullscreen{height:100vh;max-height:100vh}
-.voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(160deg,#150800,#080300)}
+.voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:transparent}
 .vo-ref{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gt);margin-bottom:.6rem}
 .vo-response{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(201,150,58,.9);margin-bottom:.4rem;font-style:italic}
 .vo-text{font-family:'EB Garamond',serif;font-size:clamp(.9rem,2.2vw,1.15rem);color:rgba(245,232,204,.92);text-align:center;line-height:1.88;font-style:italic;max-width:520px;animation:fadeword 10s ease infinite}
@@ -359,7 +359,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 
 /* animations */
 @keyframes rI{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse-art{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.3;transform:scale(1.05)}}
+@keyframes pulse-art{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.45;transform:scale(1.08)}}
 .ri{animation:rI .28s ease both}.ri2{animation:rI .28s .06s ease both}.ri3{animation:rI .28s .12s ease both}.ri4{animation:rI .28s .18s ease both}
 
 /* ══ DEPTH MODAL ══════════════════════════════════════════════════════ */
@@ -474,9 +474,9 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
           <!-- Animated light rays -->
           <div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0,transparent 40px,rgba(201,150,58,0.03) 40px,rgba(201,150,58,0.03) 41px);pointer-events:none"></div>
           <!-- Central crucifix glow -->
-          <div id="vid-glow" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.12) 0%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;pointer-events:none"></div>
+          <div id="vid-glow" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.25) 0%,rgba(139,26,14,0.15) 40%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;pointer-events:none"></div>
           <!-- Crucifix watermark -->
-          <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.12;animation:pulse-art 4s ease-in-out infinite" width="60" height="84" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
+          <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.25;animation:pulse-art 4s ease-in-out infinite" width="60" height="84" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
         </div>
         <!-- Reading content overlay -->
         <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem;text-align:center">
@@ -578,7 +578,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink);margin-bottom:.5rem">Audio options</div>
       <div class="share-strip">
         <button class="sbtn" onclick="window.open('https://www.magnificat.net/audio','_blank')">🎵 Magnificat Audio</button>
-        <button class="sbtn" onclick="window.open('https://divineoffice.org','_blank')">📿 DivineOffice.org</button>
+        <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📿 DivineOffice.org</button>
         <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📖 iBreviary</button>
         <button class="sbtn" onclick="ttsRead()">🔊 Read this page aloud</button>
       </div>
@@ -870,10 +870,10 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="card">
       <div class="card-ref">Get in touch</div>
       <div style="font-size:.95rem;color:var(--is);line-height:1.9">
-        General enquiries: <strong>hello@anthonyhq.com</strong><br>
-        Contribute an article: <strong>contributors@anthonyhq.com</strong><br>
-        Parish partnerships: <strong>parishes@anthonyhq.com</strong><br>
-        Vocations & formation: <strong>formation@anthonyhq.com</strong>
+        General enquiries: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="771f121b1b18371619031f18190e1f065914181a">[email&#160;protected]</a></strong><br>
+        Contribute an article: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c1f1312080e151e0908130e0f3c1d120814131205140d521f1311">[email&#160;protected]</a></strong><br>
+        Parish partnerships: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0878697a617b606d7b4869667c606766716079266b6765">[email&#160;protected]</a></strong><br>
+        Vocations & formation: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7d1d8c5dad6c3ded8d9f7d6d9c3dfd8d9cedfc699d4d8da">[email&#160;protected]</a></strong>
       </div>
     </div>
     <div class="prayer-panel" style="margin-top:1.25rem">
@@ -903,7 +903,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 /* ── DATA ──────────────────────────────────────────────────────────── */
 const NEWS_ITEMS=[
@@ -1596,7 +1596,7 @@ function buildOfficeHours(){
         ${h.patristic?`<div class="acc-scripture" style="margin-top:.5rem;border-color:var(--gld);background:rgba(201,150,58,.06)">${h.patristic}</div>`:""}
         <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
           <button class="sbtn" onclick="ttsRead()">🔊 Listen</button>
-          <button class="sbtn" onclick="window.open('https://divineoffice.org','_blank')">Full text →</button>
+          <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">Full text →</button>
         </div>
       </div>
     </div>`).join("");
@@ -1786,19 +1786,4 @@ function doSearch(q){
   ];
   const results=items.filter(i=>i.label.toLowerCase().includes(q.toLowerCase())||i.desc.toLowerCase().includes(q.toLowerCase()));
   if(!results.length){el.innerHTML='<p style="font-size:.9rem;color:var(--if);text-align:center;padding:1rem">No results found for "'+q+'"</p>';return;}
-  el.innerHTML=results.slice(0,8).map(r=>`<div onclick="showPage('${r.page}');closeSearch()" style="padding:.75rem .9rem;border:1px solid var(--vs);border-radius:8px;margin-bottom:.45rem;cursor:pointer;transition:border-color .12s" onmouseover="this.style.borderColor='var(--gt)'" onmouseout="this.style.borderColor='var(--vs)'">
-    <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--ink);margin-bottom:.15rem">${r.label}</div>
-    <div style="font-size:.82rem;color:var(--if)">${r.desc}</div>
-  </div>`).join('');
-}
-
-function doShare(){
-  const msg='Daily Catholic readings — '+DAYS[curDay].full;
-  if(navigator.share)navigator.share({title:'Catholic Companion',text:msg,url:window.location.href});
-  else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!'));
-  else alert('Share: '+window.location.href);
-}
-
-</script>
-</body>
-</html>
+  el.innerHTML=results.slice(0,8).map(r=>`<div onclick="showPage('${r.page}');closeSearch()" style="padding:.75rem .9rem;border:1px solid var(--vs);border-radius:8px;margin-bottom:.45rem;cursor:pointer;transition:border-color .12s" onmouseover="this.style.borderColor='var(--gt)'" onmouseout="this.st
