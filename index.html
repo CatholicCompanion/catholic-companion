@@ -90,7 +90,7 @@ body{background:var(--vel);color:var(--ink);font-family:'EB Garamond',Georgia,se
 .ticker-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;position:relative}
 .ticker-track{
   white-space:nowrap;
-  animation:scrollticker 90s linear infinite;
+  animation:scrollticker 180s linear infinite;
   font-size:.75rem;color:rgba(232,200,112,.8);
   position:absolute;left:0;
 }
@@ -103,12 +103,12 @@ body{background:var(--vel);color:var(--ink);font-family:'EB Garamond',Georgia,se
 
 /* ══ NAV ══════════════════════════════════════════════════════════════ */
 nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(201,150,58,.4)}
-.nav-inner{max-width:var(--mw);margin:0 auto;padding:0 1rem;height:52px;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.nav-inner{max-width:var(--mw);margin:0 auto;padding:0 .75rem;height:48px;display:flex;align-items:center;justify-content:space-between;gap:.35rem}
 .nav-brand{display:flex;align-items:center;gap:.45rem;text-decoration:none;flex-shrink:0;cursor:pointer}
-.nav-brand-text{font-family:'Cinzel',serif;font-size:.82rem;color:var(--gp);letter-spacing:.05em}
+.nav-brand-text{font-family:'Cinzel',serif;font-size:.75rem;color:var(--gp);letter-spacing:.04em}
 .nav-tabs{display:flex;gap:0;align-items:stretch;height:100%;overflow-x:auto;scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:rgba(232,200,112,.5);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.07em;padding:0 .65rem;cursor:pointer;transition:all .18s;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:rgba(232,200,112,.5);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.05em;padding:0 .5rem;cursor:pointer;transition:all .18s;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
 .nav-tab:hover{color:var(--gp)}
 .nav-tab.active{color:var(--gp);border-bottom-color:var(--gt)}
 .nav-tab.live-tab{color:rgba(204,0,0,.8)}
@@ -183,7 +183,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .rtab.active .rtr{color:var(--gp)}
 .rtab.psalm .rtr{font-style:italic}
 
-.vplayer{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.vplayer{position:relative;height:42vh;max-height:380px;min-height:200px;background:#000;overflow:hidden}
 .voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(160deg,#150800,#080300)}
 .vo-ref{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gt);margin-bottom:.6rem}
 .vo-response{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(201,150,58,.9);margin-bottom:.4rem;font-style:italic}
@@ -357,6 +357,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 
 /* animations */
 @keyframes rI{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-art{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.3;transform:scale(1.05)}}
 .ri{animation:rI .28s ease both}.ri2{animation:rI .28s .06s ease both}.ri3{animation:rI .28s .12s ease both}.ri4{animation:rI .28s .18s ease both}
 
 /* ══ DEPTH MODAL ══════════════════════════════════════════════════════ */
@@ -398,12 +399,13 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 <div id="tts-widget">
   <div id="tts-panel">
     <div class="tts-title">Text-to-speech · choose a voice</div>
+    <div class="tts-title" style="margin-bottom:.3rem;font-size:.6rem">Voices depend on your device</div>
     <div class="tts-voices" id="tts-voices">
-      <button class="tts-voice-btn active" data-voice="0" onclick="selectVoice(0,this)"><span class="tts-voice-icon">🎙</span>Male · standard</button>
-      <button class="tts-voice-btn" data-voice="1" onclick="selectVoice(1,this)"><span class="tts-voice-icon">🎙</span>Female · standard</button>
-      <button class="tts-voice-btn" data-voice="2" onclick="selectVoice(2,this)"><span class="tts-voice-icon">🎙</span>Male · elder</button>
+      <button class="tts-voice-btn active" data-voice="0" onclick="selectVoice(0,this)"><span class="tts-voice-icon">🎙</span>Male voice</button>
+      <button class="tts-voice-btn" data-voice="1" onclick="selectVoice(1,this)"><span class="tts-voice-icon">🎙</span>Female voice</button>
+      <button class="tts-voice-btn" data-voice="2" onclick="selectVoice(2,this)"><span class="tts-voice-icon">🎙</span>Male · slower</button>
       <button class="tts-voice-btn" data-voice="3" onclick="selectVoice(3,this)"><span class="tts-voice-icon">🎙</span>Female · warm</button>
-      <button class="tts-voice-btn" data-voice="4" onclick="selectVoice(4,this)"><span class="tts-voice-icon">🎙</span>Young · clear</button>
+      <button class="tts-voice-btn" data-voice="4" onclick="selectVoice(4,this)"><span class="tts-voice-icon">🎙</span>Young / child</button>
     </div>
     <div class="tts-controls">
       <button class="tts-ctrl" onclick="ttsRead()">▶ Read page</button>
@@ -423,6 +425,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <svg width="12" height="17" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
       <span class="nav-brand-text">Catholic Companion</span>
     </div>
+    <button onclick="openSearch()" style="background:none;border:none;color:rgba(232,200,112,.6);cursor:pointer;font-size:.9rem;padding:.2rem .4rem;flex-shrink:0;line-height:1" title="Search">⌕</button>
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPage('today')">Today</button>
       <button class="nav-tab" onclick="showPage('week')">Week</button>
@@ -441,9 +444,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('store')">Store</button>
       <button class="nav-tab" onclick="showPage('qa')">Q&amp;A</button>
     </div>
-    <div class="nav-right">
-      <button class="depth-btn" onclick="openDepth()" id="depth-btn">Growing ▾</button>
-    </div>
+    <button class="depth-btn" onclick="openDepth()" id="depth-btn" style="flex-shrink:0;margin-left:.35rem">Growing ▾</button>
   </div>
 </nav>
 
@@ -463,11 +464,17 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="reading-tabs" id="reading-tabs"></div>
     <div class="vplayer">
       <div class="voverlay" id="voverlay">
-        <svg width="40" height="56" viewBox="0 0 60 90" fill="rgba(201,150,58,0.5)" style="margin-bottom:1rem"><use href="#cx"/></svg>
-        <div class="vo-ref" id="vo-ref">First Reading</div>
-        <div class="vo-response" id="vo-response" style="display:none"></div>
-        <div class="vo-text" id="vo-text">Select a reading above to begin</div>
-        <div class="vo-ai-lbl">AI-illustrated · sacred art</div>
+        <div id="art-slideshow" style="position:absolute;inset:0;overflow:hidden">
+          <div class="art-slide active" style="background:linear-gradient(160deg,#1a0800 0%,#3d0808 40%,#0d0400 100%);position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg width="80" height="112" viewBox="0 0 60 90" fill="rgba(184,134,11,0.18)" style="animation:pulse-art 4s ease-in-out infinite"><use href="#cx"/></svg>
+          </div>
+        </div>
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem">
+          <div class="vo-ref" id="vo-ref" style="margin-bottom:.5rem">Today's Reading</div>
+          <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem"></div>
+          <div class="vo-text" id="vo-text" style="font-size:clamp(.9rem,2vw,1.1rem)">Click a reading tab above to begin</div>
+        </div>
+        <div class="vo-ai-lbl">Sacred art · click ▶ to hear the reading aloud</div>
       </div>
       <video id="rv" style="display:none" playsinline></video>
     </div>
@@ -765,6 +772,18 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     </div>
   </div>
   <div class="content" id="qa-content"></div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="overlay" id="search-overlay">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-hd"><h2>Search Catholic Companion</h2><button class="modal-close" onclick="closeSearch()">✕</button></div>
+    <div class="modal-bd">
+      <input type="text" id="search-input" placeholder="Search sections, saints, readings..." oninput="doSearch(this.value)"
+        style="width:100%;border:1px solid var(--vs);border-radius:8px;padding:.65rem 1rem;font-family:'EB Garamond',serif;font-size:1rem;color:var(--is);background:var(--vel);margin-bottom:.85rem">
+      <div id="search-results"></div>
+    </div>
+  </div>
 </div>
 
 <!-- DEPTH MODAL -->
@@ -1468,16 +1487,26 @@ function selectVoice(idx,btn){
 function getVoiceForIdx(idx){
   const voices=synth.getVoices();
   if(!voices.length)return null;
-  // Find voices by gender/type preference
-  const prefs=[
-    v=>v.name.toLowerCase().includes('male')&&!v.name.toLowerCase().includes('female'),
-    v=>v.name.toLowerCase().includes('female'),
-    v=>v.name.toLowerCase().includes('george')||v.name.toLowerCase().includes('james'),
-    v=>v.name.toLowerCase().includes('karen')||v.name.toLowerCase().includes('victoria')||v.name.toLowerCase().includes('samantha'),
-    v=>v.name.toLowerCase().includes('daniel')
+  const en=voices.filter(v=>v.lang.startsWith('en'));
+  const pool=en.length?en:voices;
+  // Sort to prefer local/natural voices over remote
+  const local=pool.filter(v=>v.localService);
+  const all=local.length?local:pool;
+  // Voice preference strategies
+  const male=all.filter(v=>/male|man|james|george|david|daniel|thomas|arthur|ryan/i.test(v.name)&&!/female/i.test(v.name));
+  const female=all.filter(v=>/female|woman|karen|samantha|victoria|lisa|alice|emily|kate|fiona/i.test(v.name));
+  const slow=all.filter(v=>/slow|elder|senior|albert|fred/i.test(v.name));
+  const warm=female.length?female:all;
+  const young=all.filter(v=>/junior|child|young|zoe|moira/i.test(v.name));
+  const picks=[
+    male.length?male[0]:all[0],
+    female.length?female[0]:all[Math.min(1,all.length-1)],
+    slow.length?slow[0]:(male.length>1?male[1]:all[0]),
+    warm.length?warm[0]:all[0],
+    young.length?young[0]:all[Math.min(all.length-1,all.length-1)]
   ];
-  const match=voices.find(prefs[idx]||prefs[0]);
-  return match||voices[0];
+  const v=picks[idx]||all[0];
+  return v;
 }
 function ttsRead(){
   if(isSpeaking){ttsStop();}
@@ -1489,8 +1518,12 @@ function ttsRead(){
   textNodes.forEach(n=>{if(n.offsetParent!==null)text+=n.textContent.trim()+'. ';});
   if(!text.trim()){alert('No readable text found on this page.');return;}
   const utt=new SpeechSynthesisUtterance(text.substring(0,5000));
-  utt.rate=0.9;
-  utt.pitch=1;
+  // Rate and pitch per voice type for smoother delivery
+  const rateMap=[0.88,0.9,0.78,0.85,0.95];
+  const pitchMap=[0.95,1.05,0.85,1.0,1.15];
+  utt.rate=rateMap[selVoice]||0.88;
+  utt.pitch=pitchMap[selVoice]||1.0;
+  utt.volume=1.0;
   const voice=getVoiceForIdx(selVoice);
   if(voice)utt.voice=voice;
   utt.onstart=()=>{isSpeaking=true;document.getElementById('tts-btn').classList.add('speaking');};
@@ -1502,8 +1535,62 @@ function ttsRead(){
 function ttsPause(){synth.paused?synth.resume():synth.pause();}
 function ttsStop(){synth.cancel();isSpeaking=false;document.getElementById('tts-btn').classList.remove('speaking');}
 
+/* ── FULLSCREEN ────────────────────────────────────────────────────── */
+function toggleFullscreen(){
+  const vp=document.querySelector('.vplayer');
+  if(!document.fullscreenElement){
+    if(vp.requestFullscreen)vp.requestFullscreen();
+    else if(vp.webkitRequestFullscreen)vp.webkitRequestFullscreen();
+    document.getElementById('fs-btn').textContent='✕';
+  }else{
+    if(document.exitFullscreen)document.exitFullscreen();
+    document.getElementById('fs-btn').textContent='⛶';
+  }
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement)document.getElementById('fs-btn').textContent='⛶';
+});
+
 /* ── UTILS ─────────────────────────────────────────────────────────── */
 function tog(id){document.getElementById(id).classList.toggle('open');}
+function openSearch(){document.getElementById('search-overlay').classList.add('open');setTimeout(()=>document.getElementById('search-input').focus(),100);}
+function closeSearch(){document.getElementById('search-overlay').classList.remove('open');}
+function doSearch(q){
+  const el=document.getElementById('search-results');
+  if(!q.trim()){el.innerHTML='';return;}
+  const items=[
+    {label:'Today's readings',desc:'Daily scripture — First Reading, Psalm, Gospel',page:'today'},
+    {label:'This week',desc:'The week's narrative arc and all seven days',page:'week'},
+    {label:'The Holy Mass',desc:'Every part of Mass explained from Scripture',page:'mass'},
+    {label:'Live Mass',desc:'24/7 live Mass streams worldwide',page:'live'},
+    {label:'Adoration',desc:'Perpetual Eucharistic adoration streams',page:'adoration'},
+    {label:'Community Hub',desc:'Testimonies, prayer requests, faith sharing',page:'community'},
+    {label:'Children's World',desc:'Bible stories and saint adventures for children',page:'children'},
+    {label:'Formation Paths',desc:'RCIA, Confirmation, Marriage prep, Lay ministry',page:'formation'},
+    {label:'Catholic Podcasts',desc:'Top Catholic podcasts in one place',page:'podcasts'},
+    {label:'New here?',desc:'Seeker journey — start with honest questions',page:'seeker'},
+    {label:'Vocations Centre',desc:'Discernment tools and religious life guide',page:'vocations'},
+    {label:'Catholic News Room',desc:'Verified, curated Catholic news',page:'news'},
+    {label:'Curated Articles',desc:'Theology, Scripture, spirituality from contributors',page:'articles'},
+    {label:'Library',desc:'Typology, encyclicals, catechism, devotions',page:'library'},
+    {label:'Catholic Store',desc:'Bibles, books, sacramentals, vestments, rosaries',page:'store'},
+    {label:'Q&A',desc:'Common questions answered by theologians',page:'qa'},
+    {label:'Isaiah',desc:'First Reading — Isaiah 50:4–9',page:'today'},
+    {label:'Psalm',desc:'Responsorial Psalm — Ps 69:8–10',page:'today'},
+    {label:'Gospel',desc:'Holy Gospel — Mark 4:26–34',page:'today'},
+    {label:'Rosary',desc:'Devotions section in the Library',page:'library'},
+    {label:'Confession',desc:'Sacraments section in the Library',page:'library'},
+    {label:'Saints',desc:'Saints of the day in Today's readings',page:'today'},
+    {label:'St. Óscar Romero',desc:'Saint of Tuesday — martyr, Archbishop',page:'today'},
+  ];
+  const results=items.filter(i=>i.label.toLowerCase().includes(q.toLowerCase())||i.desc.toLowerCase().includes(q.toLowerCase()));
+  if(!results.length){el.innerHTML='<p style="font-size:.9rem;color:var(--if);text-align:center;padding:1rem">No results found for "'+q+'"</p>';return;}
+  el.innerHTML=results.slice(0,8).map(r=>`<div onclick="showPage('${r.page}');closeSearch()" style="padding:.75rem .9rem;border:1px solid var(--vs);border-radius:8px;margin-bottom:.45rem;cursor:pointer;transition:border-color .12s" onmouseover="this.style.borderColor='var(--gt)'" onmouseout="this.style.borderColor='var(--vs)'">
+    <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--ink);margin-bottom:.15rem">${r.label}</div>
+    <div style="font-size:.82rem;color:var(--if)">${r.desc}</div>
+  </div>`).join('');
+}
+
 function doShare(){
   const msg='Daily Catholic readings — '+DAYS[curDay].full;
   if(navigator.share)navigator.share({title:'Catholic Companion',text:msg,url:window.location.href});
