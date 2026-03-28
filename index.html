@@ -823,18 +823,18 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 <script>
 /* ── DATA ──────────────────────────────────────────────────────────── */
 const NEWS_ITEMS=[
-  'Pope Leo XIV leads Angelus prayer — reflects on the Parable of the Sower',
-  'Diocese of Lagos, Nigeria celebrates 200th anniversary with outdoor Mass of 150,000',
-  'World Youth Day 2027 confirmed for Manila, Philippines — registration now open',
-  'New martyrology: 22 martyrs of Korea beatified in Seoul',
-  'Vatican Jubilee 2025: special plenary indulgence conditions announced',
-  'Ascension of the Lord: Holy Day of Obligation this Thursday',
-  'Carmelite Sisters announce full digital archive of St. Thérèse manuscripts',
-  'EWTN: Mother Angelica canonisation cause formally opened',
-  'Synod on Synodality: implementation phase launched in all dioceses worldwide',
-  'St. Carlo Acutis: new shrine opened in Assisi following canonisation',
-  'Nigerian Bishops\' Conference approves new Igbo translation of the Roman Missal',
-  'International Eucharistic Congress: Indianapolis 2026 — global registration open',
+  'Catholic Companion is now live — daily scripture, live Mass, adoration and more at companion.anthonyhq.com',
+  'Today: Saturday Memorial of Our Lady · Liturgical colour: White · Ordinary Time XIV',
+  'Live Mass streaming now from EWTN, Vatican, Dominican House, Carmelite Monastery and more',
+  'Divine Office: all five hours of the Liturgy of the Hours now available on Catholic Companion',
+  'Formation paths: RCIA · Confirmation · Marriage Prep · Lay Ministry · Deep Discipleship',
+  'Seeker Journey: honest answers to hard questions for those exploring the Catholic faith',
+  'Catholic Companion is under active development — new features added every week',
+  'Share Catholic Companion with your parish: companion.anthonyhq.com — free, no login required',
+  'Live news integration coming in Stage 2 — this ticker will show real verified Catholic news',
+  'Children section: Bible adventure stories and saint journeys for ages 3 to 16',
+  'Q&A: common questions answered with Magisterial sources — submit your question today',
+  'Catholic Podcast Hub: top Catholic podcasts curated and playable in one place',
 ];
 
 const DAYS=[
@@ -1348,17 +1348,17 @@ function buildVocList(){
 /* ── NEWS ROOM ─────────────────────────────────────────────────────── */
 function buildNewsList(){
   const news=[
-    {cat:"Vatican",headline:"Pope Leo XIV leads Angelus prayer — reflects on the Parable of the Sower",source:"Vatican News",time:"2h ago"},
-    {cat:"Africa",headline:"Diocese of Lagos, Nigeria celebrates 200th anniversary — 150,000 attend outdoor Mass",source:"Catholic Herald",time:"4h ago"},
-    {cat:"Asia Pacific",headline:"World Youth Day 2027 confirmed for Manila — registration opens",source:"Agenzia Fides",time:"6h ago"},
-    {cat:"Beatification",headline:"22 martyrs of Korea beatified by Pope Leo XIV in Seoul",source:"Vatican News",time:"1d ago"},
-    {cat:"Jubilee",headline:"Vatican announces conditions for Jubilee 2025 special plenary indulgence",source:"Vatican News",time:"1d ago"},
-    {cat:"Canonisation",headline:"EWTN: Diocese of Birmingham opens Mother Angelica's canonisation cause",source:"EWTN News",time:"2d ago"},
-    {cat:"Nigeria",headline:"Nigerian Bishops' Conference approves new Igbo translation of the Roman Missal",source:"Catholic Bishops' Conference of Nigeria",time:"3d ago"},
-    {cat:"Mission",headline:"Synod on Synodality: all dioceses now entering implementation phase",source:"Vatican News",time:"3d ago"},
+    {cat:"Vatican",headline:"Vatican: For the latest news from the Holy See, visit vaticannews.va",source:"Vatican News",time:"Live"},
+    {cat:"Church",headline:"Catholic Herald: Latest Catholic news from the UK and worldwide",source:"Catholic Herald",time:"catholicherald.co.uk"},
+    {cat:"Africa",headline:"CISA News: Catholic news from Africa — cisanewsafrica.com",source:"CISA",time:"Live"},
+    {cat:"Notice",headline:"Catholic Companion News Room: Live news integration coming in Stage 2 — this section will show real verified Catholic news automatically",source:"Catholic Companion",time:"Coming soon"},
+    {cat:"Notice",headline:"Until live news is connected, please visit catholicnewsagency.com for current Catholic news",source:"CNA",time:"catholicnewsagency.com"},
+    {cat:"Platform",headline:"Catholic Companion is live at companion.anthonyhq.com — share it with your parish today",source:"Catholic Companion",time:"Now"},
+    {cat:"Platform",headline:"New this week: Divine Office section added — all five hours of the Liturgy of the Hours",source:"Catholic Companion",time:"New"},
+    {cat:"Platform",headline:"Formation Paths available: RCIA, Confirmation Prep, Marriage Prep, Lay Ministry, Deep Discipleship",source:"Catholic Companion",time:"Live"},
   ];
   document.getElementById('news-list').innerHTML=news.map(n=>`
-    <div class="news-card" onclick="alert('${n.headline}\\n\\nFull article available at ${n.source}\\n\\nIn production, this links directly to the verified Catholic news source.')">
+    <div class="news-card">
       <div><div class="news-category">${n.cat}</div></div>
       <div style="flex:1">
         <div class="news-headline">${n.headline}</div>
@@ -1367,8 +1367,6 @@ function buildNewsList(){
       <div class="news-time">${n.time}</div>
     </div>`).join('');
 }
-
-/* ── ARTICLES ──────────────────────────────────────────────────────── */
 function buildArticlesList(){
   const arts=[
     {cat:"Scripture",title:"Why the Responsorial Psalm Is Not an Interruption",author:"Fr. Timothy O'Brien, STL",excerpt:"The Psalm is not a pause between the readings. It is the assembly's inspired response to what God has just said — and understanding this changes everything about how we pray the Mass."},
