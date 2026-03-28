@@ -184,6 +184,8 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .rtab.psalm .rtr{font-style:italic}
 
 .vplayer{position:relative;height:42vh;max-height:380px;min-height:200px;background:#000;overflow:hidden}
+.vplayer:-webkit-full-screen{height:100vh;max-height:100vh}
+.vplayer:fullscreen{height:100vh;max-height:100vh}
 .voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(160deg,#150800,#080300)}
 .vo-ref{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gt);margin-bottom:.6rem}
 .vo-response{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(201,150,58,.9);margin-bottom:.4rem;font-style:italic}
@@ -431,6 +433,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('week')">Week</button>
       <button class="nav-tab" onclick="showPage('mass')">The Mass</button>
       <button class="nav-tab live-tab" onclick="showPage('live')"><span class="live-pulse"></span>Live Mass</button>
+      <button class="nav-tab" onclick="showPage('office')">Divine Office</button>
       <button class="nav-tab" onclick="showPage('adoration')">Adoration</button>
       <button class="nav-tab" onclick="showPage('community')">Community</button>
       <button class="nav-tab" onclick="showPage('children')">Children</button>
@@ -443,6 +446,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('library')">Library</button>
       <button class="nav-tab" onclick="showPage('store')">Store</button>
       <button class="nav-tab" onclick="showPage('qa')">Q&amp;A</button>
+      <button class="nav-tab" onclick="showPage('about')">About</button>
     </div>
     <button class="depth-btn" onclick="openDepth()" id="depth-btn" style="flex-shrink:0;margin-left:.35rem">Growing ▾</button>
   </div>
@@ -464,17 +468,23 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="reading-tabs" id="reading-tabs"></div>
     <div class="vplayer">
       <div class="voverlay" id="voverlay">
-        <div id="art-slideshow" style="position:absolute;inset:0;overflow:hidden">
-          <div class="art-slide active" style="background:linear-gradient(160deg,#1a0800 0%,#3d0808 40%,#0d0400 100%);position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-            <svg width="80" height="112" viewBox="0 0 60 90" fill="rgba(184,134,11,0.18)" style="animation:pulse-art 4s ease-in-out infinite"><use href="#cx"/></svg>
-          </div>
+        <!-- Animated background -->
+        <div id="vid-bg" style="position:absolute;inset:0;overflow:hidden;z-index:0">
+          <div id="vid-bg-inner" style="position:absolute;inset:0;background:linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400);transition:background 1.5s ease"></div>
+          <!-- Animated light rays -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0,transparent 40px,rgba(201,150,58,0.03) 40px,rgba(201,150,58,0.03) 41px);pointer-events:none"></div>
+          <!-- Central crucifix glow -->
+          <div id="vid-glow" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.12) 0%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;pointer-events:none"></div>
+          <!-- Crucifix watermark -->
+          <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.12;animation:pulse-art 4s ease-in-out infinite" width="60" height="84" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
         </div>
-        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem">
-          <div class="vo-ref" id="vo-ref" style="margin-bottom:.5rem">Today's Reading</div>
-          <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem"></div>
-          <div class="vo-text" id="vo-text" style="font-size:clamp(.9rem,2vw,1.1rem)">Click a reading tab above to begin</div>
+        <!-- Reading content overlay -->
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem;text-align:center">
+          <div class="vo-ref" id="vo-ref" style="margin-bottom:.6rem;font-size:.72rem">Saturday Memorial of Our Lady</div>
+          <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;border:1px solid rgba(201,150,58,.3);padding:.2rem .75rem;border-radius:20px"></div>
+          <div class="vo-text" id="vo-text" style="font-size:clamp(.88rem,2vw,1.08rem);max-width:560px">Click a reading tab above to begin</div>
         </div>
-        <div class="vo-ai-lbl">Sacred art · click ▶ to hear the reading aloud</div>
+        <div class="vo-ai-lbl" style="font-size:.55rem">Sacred art illustration · click ▶ to hear aloud · ⛶ for fullscreen</div>
       </div>
       <video id="rv" style="display:none" playsinline></video>
     </div>
@@ -546,6 +556,40 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     <div class="sv-bar"><span class="sv-title" id="sv-title">Live Mass</span><button class="sv-close" onclick="closeStream()">✕ Close</button></div>
   </div>
   <div class="stream-grid" id="stream-grid"></div>
+</div>
+
+<!-- ════════════════════════════════════ PAGE: DIVINE OFFICE ════════════════════════════ -->
+<div class="page" id="page-office">
+  <div class="hero"><svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+    <div class="hero-inner">
+      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block"></span>Liturgy of the Hours</div>
+      <div class="hero-date">The Divine Office</div>
+      <div class="hero-sub">Office of Readings · Morning Prayer · Daytime Prayer · Evening Prayer · Night Prayer</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="slabel">The Church prays at every hour</div>
+    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.1rem">The Liturgy of the Hours is the official daily prayer of the Catholic Church. When you pray the Office, you are praying with the entire Church — with monks in monasteries, priests in their studies, and the faithful on buses and trains around the world. You are never praying alone.</p>
+    <div class="pull-quote">"Seven times a day I praise you." — Psalm 119:164 · The Church has structured prayer around the seven canonical hours since the earliest centuries.</div>
+    <div class="slabel" style="margin-top:1.25rem">Today's hours — Saturday, 28 March 2026</div>
+    <div id="office-hours"></div>
+    <div class="slabel" style="margin-top:1.25rem">Listen to the Office</div>
+    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:.85rem">
+      <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink);margin-bottom:.5rem">Audio options</div>
+      <div class="share-strip">
+        <button class="sbtn" onclick="window.open('https://www.magnificat.net/audio','_blank')">🎵 Magnificat Audio</button>
+        <button class="sbtn" onclick="window.open('https://divineoffice.org','_blank')">📿 DivineOffice.org</button>
+        <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📖 iBreviary</button>
+        <button class="sbtn" onclick="ttsRead()">🔊 Read this page aloud</button>
+      </div>
+      <p style="font-size:.82rem;color:var(--if);font-style:italic;margin-top:.65rem;line-height:1.6">Full integrated audio Office with all hours, all psalms, and proper antiphons for every day of the liturgical year is coming in Stage 2. Until then, the links above provide the complete Office.</p>
+    </div>
+    <div class="prayer-panel">
+      <svg class="pp-cx" width="48" height="67" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+      <div class="p-lbl">Night Prayer — Compline</div>
+      <div class="p-txt">Into your hands, Lord, I commend my spirit.<br><em>Into your hands, Lord, I commend my spirit.</em><br><br>You have redeemed us, Lord God of truth.<br><em>Into your hands, Lord, I commend my spirit.</em><br><br>May almighty God grant us a restful night and a peaceful death. Amen.</div>
+    </div>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════ PAGE: ADORATION ════════════════════════════════ -->
@@ -798,6 +842,48 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
 </div>
 
+<!-- ════ PAGE: ABOUT ════ -->
+<div class="page" id="page-about">
+  <div class="hero"><svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+    <div class="hero-inner">
+      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block"></span>Our vision</div>
+      <div class="hero-date">What Catholic Companion Is</div>
+      <div class="hero-sub">And what it is becoming</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="slabel">The vision</div>
+    <div class="pull-quote">"The digital continent is a mission field, and the Church is called to be there. What is needed is not another Catholic app — it is a Catholic digital city: a place where every believer, seeker, and curious soul can find, learn, grow, and share the Good News."</div>
+    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.1rem">Catholic Companion is a richly integrated digital platform — web, mobile, audio, and video — built to serve the global Catholic Church and to reach those outside her walls. It is not one more app in a crowded market. It is the ecosystem that ties together what exists, fills what is missing, and opens a door that no current platform has thought to build.</p>
+    <div class="slabel">What we have now</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-bottom:1.25rem" id="about-features"></div>
+    <div class="slabel">What is coming</div>
+    <div class="card">
+      <div class="card-ref">Stage 2 — Months 2–3</div>
+      <div style="font-size:.95rem;color:var(--is);line-height:1.78">AI-generated video readings · USCCB lectionary auto-population · Faithful Plus subscription (£3.99/mo) · Parish editorial tools · PWA install · Full integrated Divine Office audio · Google Search Console indexing</div>
+    </div>
+    <div class="card">
+      <div class="card-ref">Stage 3 — Months 4–6</div>
+      <div style="font-size:.95rem;color:var(--is);line-height:1.78">AI Apologetics Bot · Online Retreats · Pilgrimage & Events booking · Catholic Social Network · Vocations directory · 50+ languages · The Behold evangelisation sub-brand</div>
+    </div>
+    <div class="slabel" style="margin-top:1.25rem">Contact</div>
+    <div class="card">
+      <div class="card-ref">Get in touch</div>
+      <div style="font-size:.95rem;color:var(--is);line-height:1.9">
+        General enquiries: <strong>hello@anthonyhq.com</strong><br>
+        Contribute an article: <strong>contributors@anthonyhq.com</strong><br>
+        Parish partnerships: <strong>parishes@anthonyhq.com</strong><br>
+        Vocations & formation: <strong>formation@anthonyhq.com</strong>
+      </div>
+    </div>
+    <div class="prayer-panel" style="margin-top:1.25rem">
+      <svg class="pp-cx" width="48" height="67" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+      <div class="p-lbl">Built in Week 7 of 52 Startups in 52 Weeks</div>
+      <div class="p-txt" style="font-size:.88rem">Catholic Companion was built by a solo Catholic founder in seven days as part of the 52 Startups in 52 Weeks challenge. It launched live on 27 March 2026 at companion.anthonyhq.com. The build continues every week.</div>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <div class="bn-inner">
@@ -990,6 +1076,8 @@ window.addEventListener('DOMContentLoaded',()=>{
   buildQAContent();
   buildDepthCards();
   buildCommunityContent('testimonies');
+  buildOfficeHours();
+  buildAboutFeatures();
   checkTTSSupport();
 });
 
@@ -1016,7 +1104,7 @@ function handleNewsClick(){showPage('news');}
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  const pageOrder=['today','week','mass','live','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa'];
+  const pageOrder=['today','week','mass','live','office','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa','about'];
   const idx=pageOrder.indexOf(id);
   document.querySelectorAll('.nav-tab').forEach((b,i)=>b.classList.toggle('active',i===idx));
   document.querySelectorAll('.bn-btn').forEach((b,i)=>{
@@ -1053,6 +1141,7 @@ function selectReading(i){
   document.getElementById('prog-fill').style.width='0%';
   document.getElementById('vtime').textContent='0:00 / 2:30';
   document.querySelectorAll('.rtab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  updateVideoBg(i);
   const r=DAYS[curDay].readings[i];
   document.getElementById('vo-ref').textContent=r.ref+(r.id==='psalm'?' — Responsorial Psalm':'');
   const resp=document.getElementById('vo-response');
@@ -1434,6 +1523,87 @@ function buildStoreGrid(){
 }
 
 /* ── Q&A ───────────────────────────────────────────────────────────── */
+function buildAboutFeatures(){
+  const features=[
+    {icon:'📖',name:'Daily Readings',desc:'All readings with video player'},
+    {icon:'📅',name:'Week Narrative',desc:'Seven days as one story'},
+    {icon:'✝',name:'The Mass',desc:'All 14 parts explained'},
+    {icon:'📺',name:'Live Mass',desc:'6 streams worldwide'},
+    {icon:'🕯',name:'Adoration',desc:'Perpetual streaming'},
+    {icon:'🙏',name:'Divine Office',desc:'All 5 hours of prayer'},
+    {icon:'👥',name:'Community',desc:'Testimonies & prayer'},
+    {icon:'👶',name:'Children',desc:'Stories & saints'},
+    {icon:'📚',name:'Formation',desc:'5 complete paths'},
+    {icon:'🎙',name:'Podcasts',desc:'Top Catholic audio'},
+    {icon:'❓',name:'Seeker Journey',desc:'Honest answers'},
+    {icon:'⛪',name:'Vocations',desc:'Discernment tools'},
+    {icon:'📰',name:'News Room',desc:'Verified Catholic news'},
+    {icon:'✍',name:'Articles',desc:'Curated writing'},
+    {icon:'📜',name:'Library',desc:'Typology & catechism'},
+    {icon:'🛍',name:'Store',desc:'Catholic goods'},
+    {icon:'💬',name:'Q&A',desc:'Theological answers'},
+  ];
+  const el=document.getElementById('about-features');
+  if(!el)return;
+  el.innerHTML=features.map(f=>`
+    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);padding:.85rem;display:flex;flex-direction:column;gap:.25rem">
+      <span style="font-size:1.3rem">${f.icon}</span>
+      <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink)">${f.name}</div>
+      <div style="font-size:.78rem;color:var(--if)">${f.desc}</div>
+    </div>`).join('');
+}
+
+function buildOfficeHours(){
+  const hours=[
+    {name:"Office of Readings",latin:"Matutinum",time:"Any time",icon:"🌙",
+     desc:"A longer reading from Scripture and a patristic commentary. The heart of monastic night prayer, now available to all the faithful at any hour.",
+     psalm:'Psalm 94 — "Come, ring out our joy to the Lord"',
+     reading:"From today's Scripture — Jeremiah 11:18-20",
+     patristic:'From St. Augustine: "Our heart is restless until it rests in Thee."'},
+    {name:"Morning Prayer",latin:"Lauds",time:"On waking",icon:"🌅",
+     desc:"The Church greeting to the new day. The psalms of praise open our hearts before the day makes its demands.",
+     psalm:'Psalm 62 — "O God, you are my God; I seek you"',
+     reading:"Isaiah 66:1-2",patristic:""},
+    {name:"Daytime Prayer",latin:"Terce, Sext, None",time:"Mid-morning · Midday · Mid-afternoon",icon:"☀️",
+     desc:"Three brief pauses through the working day — each taking only five minutes. A way of bringing every hour of work before God.",
+     psalm:"Psalm 119 — selections on God's word and love",
+     reading:"A short verse from Scripture appropriate to each hour",patristic:""},
+    {name:"Evening Prayer",latin:"Vespers",time:"Evening",icon:"🌆",
+     desc:"The great prayer of thanksgiving for the day. The Magnificat — Our Lady's song of praise — is sung at Vespers every single day.",
+     psalm:'Psalm 141 — "Let my prayer arise before you like incense"',
+     reading:"1 Peter 5:8-9",patristic:""},
+    {name:"Night Prayer",latin:"Compline",time:"Before sleep",icon:"🌙",
+     desc:"The final prayer of the day. Brief, calm, and beautiful. Ends with the Salve Regina.",
+     psalm:'Psalm 90 — "He who dwells in the shelter of the Most High"',
+     reading:"Into your hands, Lord, I commend my spirit",patristic:""},
+  ];
+  const el=document.getElementById("office-hours");
+  if(!el)return;
+  el.innerHTML=hours.map((h,i)=>`
+    <div class="acc-item" id="oh${i}">
+      <div class="acc-head" onclick="tog('oh${i}')">
+        <span style="font-size:1.1rem;min-width:1.8rem">${h.icon}</span>
+        <div style="flex:1">
+          <div class="acc-title">${h.name} <span style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--if);font-style:italic;letter-spacing:.06em;margin-left:.5rem">${h.latin}</span></div>
+          <div style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--gld);letter-spacing:.07em;text-transform:uppercase">${h.time}</div>
+        </div>
+        <span class="acc-arr">›</span>
+      </div>
+      <div class="acc-body">
+        <p>${h.desc}</p>
+        <div class="acc-scripture"><strong>Psalm:</strong> ${h.psalm}</div>
+        <div class="acc-scripture" style="margin-top:.5rem"><strong>Reading:</strong> ${h.reading}</div>
+        ${h.patristic?`<div class="acc-scripture" style="margin-top:.5rem;border-color:var(--gld);background:rgba(201,150,58,.06)">${h.patristic}</div>`:""}
+        <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+          <button class="sbtn" onclick="ttsRead()">🔊 Listen</button>
+          <button class="sbtn" onclick="window.open('https://divineoffice.org','_blank')">Full text →</button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+
+
 function buildQAContent(){
   const qas=[
     {c:"Doctrine",q:"Is the Pope infallible about everything he says?",a:"<p>No. Papal infallibility is precisely defined (Vatican I, 1870) — it applies only when the Pope speaks <em>ex cathedra</em>, deliberately defining a doctrine of faith or morals as binding on the whole Church. This has happened very rarely: the Immaculate Conception (1854) and the Assumption of Our Lady (1950) are the clearest modern examples. Most of what the Pope says does not qualify, though it deserves the respect owed to the Vicar of Christ.</p>"},
@@ -1554,6 +1724,33 @@ function toggleFullscreen(){
 document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement)document.getElementById('fs-btn').textContent='⛶';
 });
+
+/* ── FULLSCREEN ────────────────────────────────────────────────────── */
+function toggleFullscreen(){
+  const vp=document.querySelector('.vplayer');
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+    (vp.requestFullscreen||vp.webkitRequestFullscreen||vp.mozRequestFullScreen).call(vp);
+    document.getElementById('fs-btn').textContent='✕';
+  }else{
+    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+    document.getElementById('fs-btn').textContent='⛶';
+  }
+}
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.getElementById('fs-btn').textContent='⛶';});
+document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFullscreenElement)document.getElementById('fs-btn').textContent='⛶';});
+document.addEventListener('keydown',(e)=>{if(e.key==='f'||e.key==='F')toggleFullscreen();});
+
+/* ── VIDEO BACKGROUND COLOURS PER READING ─────────────────────────── */
+const readingBgs=[
+  'linear-gradient(160deg,#1a0800,#2d1505 40%,#0d0400)', /* First reading - warm */
+  'linear-gradient(160deg,#0a0d1a,#1a0d2d 40%,#050510)', /* Psalm - deep blue */
+  'linear-gradient(160deg,#1a0800,#2d0808 40%,#0d0300)', /* Second reading */
+  'linear-gradient(160deg,#0d1a0d,#0a2d0a 40%,#030d03)', /* Gospel - deep green */
+];
+function updateVideoBg(readingIdx){
+  const bg=document.getElementById('vid-bg-inner');
+  if(bg)bg.style.background=readingBgs[readingIdx]||readingBgs[0];
+}
 
 /* ── UTILS ─────────────────────────────────────────────────────────── */
 function tog(id){document.getElementById(id).classList.toggle('open');}
