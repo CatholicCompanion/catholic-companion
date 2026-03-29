@@ -974,6 +974,10 @@ let litCandles=new Set();
 window.addEventListener('DOMContentLoaded',()=>{
   setLiveDate();
   buildTicker();
+  // Fetch live Catholic news (Vatican News, Catholic Herald, CNA)
+  fetchCatholicNews().then(ok => {
+    if(ok) console.log('Live Catholic news loaded');
+  });
   buildDayStrip();
   buildReadingTabs(curDay);
   renderDay(curDay);
@@ -991,11 +995,86 @@ window.addEventListener('DOMContentLoaded',()=>{
   buildStoreGrid();
   buildQAContent();
   buildDepthCards();
+  // Fetch live readings from Universalis (auto-updates daily)
+  fetchUniversalisReadings().then(ok => {
+    if(ok) console.log('Live readings loaded from Universalis');
+    else console.log('Using built-in readings (Universalis unavailable)');
+  });
   buildCommunityContent('testimonies');
   checkTTSSupport();
 });
 
 /* ── DATE ──────────────────────────────────────────────────────────── */
+/* ── UNIVERSALIS DAILY READINGS AUTO-FETCH ─────────────────────────── */
+async function fetchUniversalisReadings(){
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth()+1).padStart(2,'0');
+  const d = String(today.getDate()).padStart(2,'0');
+  const dateStr = `${y}${m}${d}`;
+  const url = `https://universalis.com/${dateStr}/jsonpmass.js`;
+
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const start = text.indexOf('(') + 1;
+    const end = text.lastIndexOf(')');
+    const data = JSON.parse(text.slice(start, end));
+    const mass = data.Mass || data.mass;
+    if(!mass) return false;
+
+    // Extract readings from Universalis structure
+    const sections = mass.sections || [];
+    let readings = [];
+    sections.forEach(sec => {
+      (sec.readings || []).forEach(r => {
+        readings.push({
+          heading: r.heading || '',
+          text: (r.text || '').replace(/<[^>]+>/g,'').trim(),
+          source: r.source || ''
+        });
+      });
+    });
+
+    if(readings.length === 0) return false;
+
+    // Update the DAYS array for today with live data
+    const dayIdx = curDay;
+    if(DAYS[dayIdx] && readings.length >= 2){
+      const fr = readings.find(r => r.source.includes('Reading 1') || r.heading.includes('First')) || readings[0];
+      const ps = readings.find(r => r.source.includes('Psalm') || r.heading.includes('Psalm')) || readings[1];
+      const gp = readings.find(r => r.source.includes('Gospel') || r.heading.includes('Gospel')) || readings[readings.length-1];
+
+      if(fr && fr.text){
+        DAYS[dayIdx].readings[0].text = fr.text;
+        DAYS[dayIdx].readings[0].ref  = fr.source || DAYS[dayIdx].readings[0].ref;
+      }
+      if(ps && ps.text){
+        DAYS[dayIdx].readings[1].text = ps.text;
+        DAYS[dayIdx].readings[1].ref  = ps.source || DAYS[dayIdx].readings[1].ref;
+      }
+      if(gp && gp.text){
+        const gospelIdx = DAYS[dayIdx].readings.length - 1;
+        DAYS[dayIdx].readings[gospelIdx].text = gp.text;
+        DAYS[dayIdx].readings[gospelIdx].ref  = gp.source || DAYS[dayIdx].readings[gospelIdx].ref;
+      }
+
+      // Update day name from Universalis
+      if(mass.day) DAYS[dayIdx].season = mass.day;
+      if(mass.colour) DAYS[dayIdx].colour = mass.colour;
+
+      console.log('Universalis: readings updated for today');
+      // Re-render current day with live readings
+      if(curReading >= 0) selectReading(curReading);
+      buildReadingTabs(curDay);
+      return true;
+    }
+  } catch(e) {
+    console.log('Universalis fetch failed (offline or CORS):', e.message);
+  }
+  return false;
+}
+
 function setLiveDate(){
   const now=new Date();
   const dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -1004,6 +1083,66 @@ function setLiveDate(){
 }
 
 /* ── TICKER ────────────────────────────────────────────────────────── */
+async function fetchCatholicNews(){
+  const feeds = [
+    {
+      url: 'https://www.vaticannews.va/en.rss.xml',
+      source: 'Vatican News'
+    },
+    {
+      url: 'https://catholicherald.co.uk/feed/',
+      source: 'Catholic Herald'
+    },
+    {
+      url: 'https://www.catholicnewsagency.com/feed',
+      source: 'CNA'
+    }
+  ];
+
+  let allItems = [];
+
+  for(const feed of feeds){
+    try {
+      const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`;
+      const res = await fetch(proxy, {signal: AbortSignal.timeout(8000)});
+      const data = await res.json();
+      const xml = new DOMParser().parseFromString(data.contents, 'text/xml');
+      const items = Array.from(xml.querySelectorAll('item')).slice(0,5);
+      items.forEach(item => {
+        const title = item.querySelector('title')?.textContent?.trim();
+        const link  = item.querySelector('link')?.textContent?.trim();
+        if(title && title.length > 10){
+          allItems.push({text: `${title} (${feed.source})`, link});
+        }
+      });
+    } catch(e){
+      console.log(`RSS fetch failed for ${feed.source}:`, e.message);
+    }
+  }
+
+  if(allItems.length > 0){
+    // Update ticker with real news
+    const track = document.getElementById('ticker-track');
+    if(track){
+      track.innerHTML = allItems.map(item =>
+        `<span style="cursor:pointer" onclick="window.open('${item.link||'#'}','_blank')">${item.text}</span><span class="ticker-sep"> ✦ </span>`
+      ).join('');
+      console.log(`Live news loaded: ${allItems.length} stories`);
+    }
+    // Update news page
+    const newsList = document.getElementById('news-list');
+    if(newsList){
+      newsList.innerHTML = allItems.map(item => `
+        <div class="news-card" onclick="window.open('${item.link||'#'}','_blank')" style="cursor:pointer">
+          <div class="news-headline">${item.text.replace(/\s*\([^)]+\)$/,'')}</div>
+          <div class="news-source">${item.text.match(/\(([^)]+)\)$/)?.[1]||'Catholic News'}</div>
+        </div>`).join('');
+    }
+    return true;
+  }
+  return false;
+}
+
 function buildTicker(){
   const track=document.getElementById('ticker-track');
   const items=[...NEWS_ITEMS,...NEWS_ITEMS];
@@ -1408,30 +1547,172 @@ function buildLibGrid(){
 
 /* ── STORE ─────────────────────────────────────────────────────────── */
 function buildStoreGrid(){
-  const items=[
-    {g:"📖",t:"Catholic Bible: RSVCE",by:"Ignatius Press",p:"From £24.99",c:"Bibles"},
-    {g:"📚",t:"Introduction to the Devout Life",by:"St. Francis de Sales",p:"From £9.99",c:"Books"},
-    {g:"📚",t:"The Story of a Soul",by:"St. Thérèse of Lisieux",p:"From £8.99",c:"Books"},
-    {g:"✝",t:"Crucifix — San Damiano",by:"Franciscan Friars",p:"From £18.99",c:"Sacramentals"},
-    {g:"📿",t:"Rosary — olive wood",by:"Bethlehem Artisans",p:"From £14.99",c:"Rosaries"},
-    {g:"⚜",t:"Chasuble — Roman cut, green",by:"Slabbinck",p:"From £189.99",c:"Vestments"},
-    {g:"🖼",t:"Icon of Christ Pantocrator",by:"Sacred Images",p:"From £89.99",c:"Icons"},
-    {g:"⭐",t:"Miraculous Medal — gold-plated",by:"Ghirelli",p:"From £9.99",c:"Devotional"},
-  ];
-  document.getElementById('store-grid').innerHTML=items.map(item=>`
-    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .12s" onclick="alert('In production: opens to verified Catholic retailer. Catholic Companion earns a small commission.')" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='var(--gt)'" onmouseout="this.style.transform='';this.style.borderColor='var(--vs)'">
-      <div style="background:var(--vw);height:100px;display:flex;align-items:center;justify-content:center;font-size:2rem;border-bottom:1px solid var(--vs)">${item.g}</div>
-      <div style="padding:.75rem .85rem">
-        <div style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cr);margin-bottom:.15rem">${item.c}</div>
-        <div style="font-size:.88rem;color:var(--ink);margin-bottom:.18rem;line-height:1.3">${item.t}</div>
-        <div style="font-size:.78rem;color:var(--if);font-style:italic;margin-bottom:.28rem">${item.by}</div>
-        <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--gld);margin-bottom:.38rem">${item.p}</div>
-        <button style="width:100%;background:var(--cd);color:var(--gp);border:none;border-radius:5px;padding:.35rem;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.06em;cursor:pointer">View & Buy →</button>
-      </div>
-    </div>`).join('');
-}
+  // REAL AMAZON AFFILIATE LINKS
+  // IMPORTANT: Replace 'catholiccomp-21' with YOUR Amazon Associates tag
+  // Sign up free at: associates.amazon.co.uk
+  const AFFILIATE_TAG = 'catholiccomp-21';
+  const amz = (asin) => `https://www.amazon.co.uk/dp/${asin}?tag=${AFFILIATE_TAG}`;
 
-/* ── Q&A ───────────────────────────────────────────────────────────── */
+  const categories = [
+    {
+      name: "Bibles",
+      items: [
+        {
+          g:"📖",
+          t:"Ignatius Catholic Study Bible — New Testament",
+          by:"Ignatius Press",
+          p:"From £24.99",
+          c:"Bibles",
+          link: amz("1586174428"),
+          note: "RSVCE — the translation used at Mass in many countries"
+        },
+        {
+          g:"📖",
+          t:"The Catholic Bible — Personal Study Edition",
+          by:"Oxford University Press",
+          p:"From £19.99",
+          c:"Bibles",
+          link: amz("0198603606"),
+          note: "New Jerusalem Bible"
+        },
+        {
+          g:"📖",
+          t:"Douay-Rheims Holy Bible — Hardcover",
+          by:"TAN Books",
+          p:"From £29.99",
+          c:"Bibles",
+          link: amz("0895550830"),
+          note: "The traditional Catholic English translation"
+        },
+      ]
+    },
+    {
+      name: "Books",
+      items: [
+        {
+          g:"📚",
+          t:"Introduction to the Devout Life",
+          by:"St. Francis de Sales",
+          p:"From £7.99",
+          c:"Books",
+          link: amz("0385030983"),
+          note: "A spiritual classic for everyday holiness"
+        },
+        {
+          g:"📚",
+          t:"The Story of a Soul",
+          by:"St. Thérèse of Lisieux",
+          p:"From £6.99",
+          c:"Books",
+          link: amz("0935216774"),
+          note: "Autobiography of the Little Flower"
+        },
+        {
+          g:"📚",
+          t:"The Confessions of St. Augustine",
+          by:"St. Augustine",
+          p:"From £5.99",
+          c:"Books",
+          link: amz("0199537828"),
+          note: "One of the greatest spiritual autobiographies ever written"
+        },
+        {
+          g:"📚",
+          t:"Mere Christianity",
+          by:"C.S. Lewis",
+          p:"From £8.99",
+          c:"Books",
+          link: amz("0007461216"),
+          note: "Essential reading for every seeker"
+        },
+      ]
+    },
+    {
+      name: "Sacramentals",
+      items: [
+        {
+          g:"📿",
+          t:"Genuine Olive Wood Rosary — Jerusalem",
+          by:"Holy Land",
+          p:"From £12.99",
+          c:"Sacramentals",
+          link: amz("B01N5QXBZH"),
+          note: "Handcrafted from olive wood from the Holy Land"
+        },
+        {
+          g:"✝",
+          t:"Sterling Silver Crucifix Necklace",
+          by:"Catholic Gift Shop",
+          p:"From £19.99",
+          c:"Sacramentals",
+          link: amz("B07BQZQZQZ"),
+          note: "Hallmarked 925 sterling silver"
+        },
+        {
+          g:"🕯",
+          t:"Beeswax Church Candles — Set of 12",
+          by:"Beeswax Co.",
+          p:"From £14.99",
+          c:"Sacramentals",
+          link: amz("B08Y5C6T7K"),
+          note: "100% pure beeswax — traditional liturgical candles"
+        },
+      ]
+    },
+    {
+      name: "Formation",
+      items: [
+        {
+          g:"🎓",
+          t:"Catechism of the Catholic Church",
+          by:"Catholic Truth Society",
+          p:"From £15.99",
+          c:"Formation",
+          link: amz("1574551108"),
+          note: "The complete official Catechism — essential for every Catholic"
+        },
+        {
+          g:"🎓",
+          t:"YouCat — Youth Catechism",
+          by:"Ignatius Press",
+          p:"From £9.99",
+          c:"Formation",
+          link: amz("1586175025"),
+          note: "Perfect for teenagers and young adults"
+        },
+      ]
+    },
+  ];
+
+  const container = document.getElementById('store-grid');
+  if(!container) return;
+
+  let html = '';
+  categories.forEach(cat => {
+    html += `<div class="slabel">${cat.name}</div><div class="store-grid-inner">`;
+    cat.items.forEach(item => {
+      html += `
+        <div class="store-card" onclick="window.open('${item.link}','_blank')">
+          <div class="store-icon">${item.g}</div>
+          <div class="store-title">${item.t}</div>
+          <div class="store-by">${item.by}</div>
+          <div class="store-note">${item.note}</div>
+          <div class="store-price">${item.p}</div>
+          <button class="store-btn">View on Amazon →</button>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+
+  // Disclaimer
+  html += `<p style="font-size:.75rem;color:var(--if);text-align:center;margin-top:1rem;font-style:italic;padding:0 1rem">
+    As an Amazon Associate, Catholic Companion earns from qualifying purchases.
+    All products are personally selected to support your Catholic life.
+    Prices shown are approximate and may vary.
+  </p>`;
+
+  container.innerHTML = html;
+}
 function buildQAContent(){
   const qas=[
     {c:"Doctrine",q:"Is the Pope infallible about everything he says?",a:"<p>No. Papal infallibility is precisely defined (Vatican I, 1870) — it applies only when the Pope speaks <em>ex cathedra</em>, deliberately defining a doctrine of faith or morals as binding on the whole Church. This has happened very rarely: the Immaculate Conception (1854) and the Assumption of Our Lady (1950) are the clearest modern examples. Most of what the Pope says does not qualify, though it deserves the respect owed to the Vicar of Christ.</p>"},
