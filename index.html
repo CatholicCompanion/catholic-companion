@@ -545,7 +545,21 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
     </div>
   </div>
   <div class="stream-viewer" id="stream-viewer">
-    <div class="sv-frame"><iframe id="sv-iframe" src="" allowfullscreen allow="autoplay;encrypted-media" title="Live Mass"></iframe></div>
+    <div class="sv-frame"><div id="sv-iframe" style="height:320px;background:linear-gradient(160deg,#1a0800,#3d0808);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  border-radius:var(--r);border:1px solid rgba(201,150,58,.2)">
+  <div style="font-size:2rem">📺</div>
+  <div style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--gp)">Live Mass Stream</div>
+  <div id="sv-stream-name" style="font-size:.82rem;color:rgba(232,200,112,.7);font-style:italic">
+    Select a stream below to watch on YouTube
+  </div>
+  <button id="sv-watch-btn" onclick="openCurrentStream()"
+    style="background:var(--cr);color:#fff;border:none;border-radius:6px;
+    padding:.5rem 1.25rem;font-family:'Cinzel',serif;font-size:.8rem;cursor:pointer;
+    letter-spacing:.05em;display:none">
+    ▶ Watch on YouTube
+  </button>
+</div></div>
     <div class="sv-bar"><span class="sv-title" id="sv-title">Live Mass</span><button class="sv-close" onclick="closeStream()">✕ Close</button></div>
   </div>
   <div class="stream-grid" id="stream-grid"></div>
@@ -561,7 +575,26 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
   <div class="adoration-stream">
     <div class="adora-iframe-wrap">
-      <iframe id="adora-iframe" src="https://www.youtube.com/embed/live_stream?channel=UCnGVBmvzaehUxhK3sTOJexg&autoplay=1&mute=1" allowfullscreen allow="autoplay;encrypted-media" title="Perpetual Adoration"></iframe>
+      <div id="adora-iframe" style="height:280px;background:linear-gradient(160deg,#0a0d1a,#1a0d2d);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  border-radius:var(--r);border:1px solid rgba(201,150,58,.2)">
+  <div style="font-size:2rem">🕯</div>
+  <div style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--gp)">Eucharistic Adoration</div>
+  <div style="font-size:.82rem;color:rgba(232,200,112,.7);font-style:italic">
+    Perpetual adoration — select a chapel below
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;padding:0 1rem">
+    <button onclick="window.open('https://www.ewtn.com/tv/watch-live','_blank')"
+      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
+      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">EWTN Chapel</button>
+    <button onclick="window.open('https://www.youtube.com/@SaintClementShrine/streams','_blank')"
+      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
+      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">Saint Clement</button>
+    <button onclick="window.open('https://www.youtube.com/@DivineMercyShrineMA/streams','_blank')"
+      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
+      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">Divine Mercy</button>
+  </div>
+</div>
     </div>
     <div class="candle-row">
       <div class="candle" onclick="lightCandle(0)"><div class="c-flame" id="cf0"></div><div class="c-body"></div><div class="c-lbl">Light</div></div>
@@ -821,6 +854,8 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 </div>
 
 <script>
+
+
 /* ── DATA ──────────────────────────────────────────────────────────── */
 const NEWS_ITEMS=[
   'Catholic Companion is now live — daily scripture, live Mass, adoration and more at companion.anthonyhq.com',
@@ -943,7 +978,9 @@ const LIVE_STREAMS=[
   {id:"carmelite",title:"Carmelite Monastery — Morning Mass",source:"Carmelite Sisters",thumb:"🕯",ytId:"live",viewers:"1,800 watching"},
   {id:"mercy",title:"National Shrine of Divine Mercy",source:"Marian Fathers",thumb:"🙏",ytId:"live",viewers:"4,600 watching"},
   {id:"knock",title:"Knock Shrine — Ireland",source:"Knock National Shrine",thumb:"✝",ytId:"live",viewers:"2,300 watching"},
-];
+  {id:"walsingham",title:"Our Lady of Walsingham — England",
+   source:"Walsingham",thumb:"UK",ytId:"GIJ8rCBeSXo",viewers:"Live"},
+];;
 
 const MASS_PARTS=[
   {num:"I",title:"The Entrance Procession & Entrance Hymn",body:"<p>The Mass begins with movement — the priest processes from the sacristy to the altar while the assembly sings. This is theology enacted in space and time. The procession echoes the priestly procession into the Temple. The altar is reverenced with a bow and, on solemn occasions, incensed. The altar represents Christ Himself — simultaneously the table of the Last Supper and the stone of sacrifice. Every act of reverence toward it is reverence toward Him.</p>",scripture:"Psalm 24:3 — 'Who shall ascend the hill of the Lord?'"},
@@ -1070,7 +1107,7 @@ async function fetchUniversalisReadings(){
       return true;
     }
   } catch(e) {
-    console.log('Universalis fetch failed (offline or CORS):', e.message);
+    console.log('Universalis: using built-in readings');
   }
   return false;
 }
@@ -1084,65 +1121,71 @@ function setLiveDate(){
 
 /* ── TICKER ────────────────────────────────────────────────────────── */
 async function fetchCatholicNews(){
-  const feeds = [
-    {
-      url: 'https://www.vaticannews.va/en.rss.xml',
-      source: 'Vatican News'
-    },
-    {
-      url: 'https://catholicherald.co.uk/feed/',
-      source: 'Catholic Herald'
-    },
-    {
-      url: 'https://www.catholicnewsagency.com/feed',
-      source: 'CNA'
-    }
-  ];
+  const track = document.getElementById('ticker-track');
+  const newsList = document.getElementById('news-list');
 
-  let allItems = [];
+  try {
+    // Call our Vercel serverless function — no CORS issues, no browser blocking
+    const res = await new Promise((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error('timeout')), 10000);
+      fetch('/api/news')
+        .then(r => { clearTimeout(t); resolve(r); })
+        .catch(e => { clearTimeout(t); reject(e); });
+    });
 
-  for(const feed of feeds){
-    try {
-      const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`;
-      const res = await fetch(proxy, {signal: AbortSignal.timeout(8000)});
-      const data = await res.json();
-      const xml = new DOMParser().parseFromString(data.contents, 'text/xml');
-      const items = Array.from(xml.querySelectorAll('item')).slice(0,5);
-      items.forEach(item => {
-        const title = item.querySelector('title')?.textContent?.trim();
-        const link  = item.querySelector('link')?.textContent?.trim();
-        if(title && title.length > 10){
-          allItems.push({text: `${title} (${feed.source})`, link});
-        }
-      });
-    } catch(e){
-      console.log(`RSS fetch failed for ${feed.source}:`, e.message);
+    if(!res.ok) throw new Error('API returned ' + res.status);
+    const data = await res.json();
+
+    if(data.ok && data.items && data.items.length > 0){
+      const items = data.items;
+
+      // Update ticker
+      if(track){
+        track.innerHTML = items.map(item =>
+          `<span style="cursor:pointer" onclick="window.open('${item.link}','_blank')">
+            ${item.title} <span style="color:${item.color};font-size:.75em">(${item.source})</span>
+          </span><span class="ticker-sep"> ✦ </span>`
+        ).join('');
+      }
+
+      // Update news page
+      if(newsList){
+        newsList.innerHTML = items.map(item => `
+          <div class="news-card" onclick="window.open('${item.link||'#'}','_blank')" style="cursor:pointer">
+            <div style="display:flex;align-items:flex-start;gap:.75rem">
+              <span style="background:${item.color};color:#fff;font-family:'Cinzel',serif;
+                font-size:.58rem;padding:2px 7px;border-radius:3px;white-space:nowrap;
+                flex-shrink:0;margin-top:2px">${item.source}</span>
+              <div>
+                <div class="news-headline">${item.title}</div>
+                ${item.date?`<div class="news-source">${new Date(item.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</div>`:''}
+              </div>
+            </div>
+          </div>`).join('');
+      }
+      return true;
     }
+  } catch(e) {
+    console.log('News API unavailable:', e.message);
   }
 
-  if(allItems.length > 0){
-    // Update ticker with real news
-    const track = document.getElementById('ticker-track');
-    if(track){
-      track.innerHTML = allItems.map(item =>
-        `<span style="cursor:pointer" onclick="window.open('${item.link||'#'}','_blank')">${item.text}</span><span class="ticker-sep"> ✦ </span>`
-      ).join('');
-      console.log(`Live news loaded: ${allItems.length} stories`);
-    }
-    // Update news page
-    const newsList = document.getElementById('news-list');
-    if(newsList){
-      newsList.innerHTML = allItems.map(item => `
-        <div class="news-card" onclick="window.open('${item.link||'#'}','_blank')" style="cursor:pointer">
-          <div class="news-headline">${item.text.replace(/\s*\([^)]+\)$/,'')}</div>
-          <div class="news-source">${item.text.match(/\(([^)]+)\)$/)?.[1]||'Catholic News'}</div>
-        </div>`).join('');
-    }
-    return true;
+  // Fallback — direct links if API unavailable
+  if(newsList && newsList.innerHTML.includes('Loading')){
+    newsList.innerHTML = `
+      <div style="padding:1rem;text-align:center">
+        <p style="color:var(--if);font-style:italic;margin-bottom:1rem">
+          Connecting to live news... visit these sources directly:
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center">
+          <a href="https://www.vaticannews.va" target="_blank" class="sbtn">Vatican News</a>
+          <a href="https://catholicherald.co.uk" target="_blank" class="sbtn">Catholic Herald</a>
+          <a href="https://www.catholicnewsagency.com" target="_blank" class="sbtn">CNA</a>
+          <a href="https://zenit.org" target="_blank" class="sbtn">Zenit</a>
+        </div>
+      </div>`;
   }
   return false;
 }
-
 function buildTicker(){
   const track=document.getElementById('ticker-track');
   const items=[...NEWS_ITEMS,...NEWS_ITEMS];
@@ -1291,39 +1334,23 @@ function buildMassAcc(){
 
 /* ── LIVE STREAMS ──────────────────────────────────────────────────── */
 function buildStreamGrid(){
-  document.getElementById('stream-grid').innerHTML=LIVE_STREAMS.map(s=>`
-    <div class="sc" id="sc-${s.id}" onclick="watchStream('${s.id}','${s.ytId}','${s.title}')">
-      <div class="sc-thumb">${s.thumb}<div class="sc-live">${'● LIVE'}</div></div>
-      <div class="sc-info">
-        <div class="sc-title">${s.title}</div>
-        <div class="sc-src">${s.source}</div>
-        <div style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--live);margin-top:.18rem">${s.viewers}</div>
-        <button class="sc-btn">Watch now →</button>
+  const grid = document.getElementById('stream-grid');
+  if(!grid) return;
+  grid.innerHTML = STREAMS.map(s => `
+    <div class="stream-card" onclick="window.open('${s.url}','_blank')">
+      <div class="stream-thumb">
+        <div class="stream-live-badge">● LIVE</div>
+        <div class="stream-icon">${s.thumb}</div>
+      </div>
+      <div class="stream-info">
+        <div class="stream-title">${s.title}</div>
+        <div class="stream-source">${s.source}</div>
+        <div class="stream-viewers">${s.viewers}</div>
+        <button class="stream-btn" onclick="event.stopPropagation();window.open('${s.url}','_blank')">
+          Watch on YouTube →
+        </button>
       </div>
     </div>`).join('');
-}
-function watchStream(id,ytId,title){
-  const v=document.getElementById('stream-viewer');
-  const iframe=document.getElementById('sv-iframe');
-  v.style.display='block';
-  document.getElementById('sv-title').textContent=title;
-  iframe.src=ytId!=='live'?`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`:`https://www.youtube.com/embed?listType=search&list=catholic+mass+live&autoplay=1`;
-  document.querySelectorAll('.sc').forEach(c=>c.classList.remove('active-sc'));
-  document.getElementById('sc-'+id)?.classList.add('active-sc');
-  v.scrollIntoView({behavior:'smooth'});
-}
-function closeStream(){document.getElementById('stream-viewer').style.display='none';document.getElementById('sv-iframe').src='';}
-function switchAdoration(t){
-  const src={ewtn:'https://www.youtube.com/embed/live_stream?channel=UCnGVBmvzaehUxhK3sTOJexg&autoplay=1&mute=1',carmelite:'https://www.youtube.com/embed/live_stream?channel=carmelitesisters&autoplay=1&mute=1',rome:'https://www.youtube.com/embed/live_stream?channel=vaticannews&autoplay=1&mute=1',mercy:'https://www.youtube.com/embed/live_stream?channel=divinemercysanctuary&autoplay=1&mute=1'};
-  document.getElementById('adora-iframe').src=src[t]||src.ewtn;
-}
-function lightCandle(i){document.getElementById('cf'+i).classList.add('lit');litCandles.add(i);if(litCandles.size===5)setTimeout(()=>alert('All five candles lit 🕯\n\nYour intention is offered before the Blessed Sacrament.\n\n"O Lord, I believe, I adore, I hope, and I love Thee."'),500);}
-
-/* ── COMMUNITY ─────────────────────────────────────────────────────── */
-function showCommTab(tab,btn){
-  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  buildCommunityContent(tab);
 }
 function buildCommunityContent(tab){
   const el=document.getElementById('comm-content');
@@ -1547,168 +1574,128 @@ function buildLibGrid(){
 
 /* ── STORE ─────────────────────────────────────────────────────────── */
 function buildStoreGrid(){
-  // REAL AMAZON AFFILIATE LINKS
-  // IMPORTANT: Replace 'catholiccompa-21' with YOUR Amazon Associates tag
-  // Sign up free at: associates.amazon.co.uk
-  const AFFILIATE_TAG = 'catholiccompa-21';
-  const amz = (asin) => `https://www.amazon.co.uk/dp/${asin}?tag=${AFFILIATE_TAG}`;
+  const TAG = 'catholiccompa-21';
+  const amz = (asin) => `https://www.amazon.co.uk/dp/${asin}?tag=${TAG}`;
+  const img = (asin) => `https://images-na.ssl-images-amazon.com/images/P/${asin}.jpg`;
 
-  const categories = [
+  const products = [
     {
-      name: "Bibles",
-      items: [
-        {
-          g:"📖",
-          t:"Ignatius Catholic Study Bible — New Testament",
-          by:"Ignatius Press",
-          p:"From £24.99",
-          c:"Bibles",
-          link: amz("1586174428"),
-          note: "RSVCE — the translation used at Mass in many countries"
-        },
-        {
-          g:"📖",
-          t:"The Catholic Bible — Personal Study Edition",
-          by:"Oxford University Press",
-          p:"From £19.99",
-          c:"Bibles",
-          link: amz("0198603606"),
-          note: "New Jerusalem Bible"
-        },
-        {
-          g:"📖",
-          t:"Douay-Rheims Holy Bible — Hardcover",
-          by:"TAN Books",
-          p:"From £29.99",
-          c:"Bibles",
-          link: amz("0895550830"),
-          note: "The traditional Catholic English translation"
-        },
+      cat:"Bibles",
+      items:[
+        {asin:"1586174460", name:"RSV Catholic Edition Bible", by:"Ignatius Press",
+         price:"From £24.99", note:"The standard Catholic study Bible — RSVCE translation"},
+        {asin:"0195288777", name:"The Catholic Study Bible", by:"Oxford University Press",
+         price:"From £34.99", note:"New American Bible with full study notes"},
+        {asin:"0895550830", name:"Douay-Rheims Holy Bible — Hardcover", by:"TAN Books",
+         price:"From £29.99", note:"The traditional Catholic English translation — public domain"},
+        {asin:"0007461216", name:"Mere Christianity", by:"C.S. Lewis",
+         price:"From £7.99", note:"Essential reading for every seeker and every Catholic"},
       ]
     },
     {
-      name: "Books",
-      items: [
-        {
-          g:"📚",
-          t:"Introduction to the Devout Life",
-          by:"St. Francis de Sales",
-          p:"From £7.99",
-          c:"Books",
-          link: amz("0385030983"),
-          note: "A spiritual classic for everyday holiness"
-        },
-        {
-          g:"📚",
-          t:"The Story of a Soul",
-          by:"St. Thérèse of Lisieux",
-          p:"From £6.99",
-          c:"Books",
-          link: amz("0935216774"),
-          note: "Autobiography of the Little Flower"
-        },
-        {
-          g:"📚",
-          t:"The Confessions of St. Augustine",
-          by:"St. Augustine",
-          p:"From £5.99",
-          c:"Books",
-          link: amz("0199537828"),
-          note: "One of the greatest spiritual autobiographies ever written"
-        },
-        {
-          g:"📚",
-          t:"Mere Christianity",
-          by:"C.S. Lewis",
-          p:"From £8.99",
-          c:"Books",
-          link: amz("0007461216"),
-          note: "Essential reading for every seeker"
-        },
+      cat:"Books",
+      items:[
+        {asin:"0385030983", name:"Introduction to the Devout Life", by:"St. Francis de Sales",
+         price:"From £6.99", note:"A spiritual classic for everyday holiness"},
+        {asin:"0935216774", name:"The Story of a Soul", by:"St. Thérèse of Lisieux",
+         price:"From £6.99", note:"Autobiography of the Little Flower"},
+        {asin:"0199537828", name:"The Confessions of St. Augustine", by:"St. Augustine",
+         price:"From £5.99", note:"One of the greatest spiritual autobiographies ever written"},
+        {asin:"0898709016", name:"Interior Castle", by:"St. Teresa of Ávila",
+         price:"From £8.99", note:"The masterwork of mystical theology"},
+        {asin:"0385502648", name:"The Imitation of Christ", by:"Thomas à Kempis",
+         price:"From £5.99", note:"The most read Catholic book after the Bible"},
+        {asin:"0898704723", name:"Story of a Soul — ICS Edition", by:"St. Thérèse",
+         price:"From £12.99", note:"Critical scholarly edition with full text"},
+        {asin:"1574551108", name:"Catechism of the Catholic Church", by:"Catholic Truth Society",
+         price:"From £14.99", note:"The complete official Catechism — essential for every Catholic"},
+        {asin:"1586175025", name:"YouCat — Youth Catechism", by:"Ignatius Press",
+         price:"From £9.99", note:"Perfect for teenagers, students, and young adults"},
       ]
     },
     {
-      name: "Sacramentals",
-      items: [
-        {
-          g:"📿",
-          t:"Genuine Olive Wood Rosary — Jerusalem",
-          by:"Holy Land",
-          p:"From £12.99",
-          c:"Sacramentals",
-          link: amz("B01N5QXBZH"),
-          note: "Handcrafted from olive wood from the Holy Land"
-        },
-        {
-          g:"✝",
-          t:"Sterling Silver Crucifix Necklace",
-          by:"Catholic Gift Shop",
-          p:"From £19.99",
-          c:"Sacramentals",
-          link: amz("B07BQZQZQZ"),
-          note: "Hallmarked 925 sterling silver"
-        },
-        {
-          g:"🕯",
-          t:"Beeswax Church Candles — Set of 12",
-          by:"Beeswax Co.",
-          p:"From £14.99",
-          c:"Sacramentals",
-          link: amz("B08Y5C6T7K"),
-          note: "100% pure beeswax — traditional liturgical candles"
-        },
+      cat:"Rosaries & Sacramentals",
+      items:[
+        {asin:"B08DQ91WJQ", name:"Olive Wood Rosary — Handmade in Jerusalem", by:"Ampals",
+         price:"From £12.99", note:"Made from olive wood from the hills of Jerusalem"},
+        {asin:"B084Z2SGS8", name:"Catholic Rosary — Olive Wood, Jerusalem Soil", by:"Nazareth Store",
+         price:"From £11.99", note:"Carved olive wood beads with Jerusalem soil centrepiece"},
+        {asin:"B08YM65F4R", name:"Olive Wood Rosary — Virgin Mary Medal", by:"Holy Land",
+         price:"From £14.99", note:"19 inch rope rosary with Jerusalem soil and authenticity cert"},
+        {asin:"B076RTB85N", name:"Sterling Silver INRI Crucifix Necklace", by:"FDJ Jewelry",
+         price:"From £19.99", note:"925 sterling silver — handcrafted in USA"},
+        {asin:"B0BB6XSVTS", name:"Sterling Silver Crucifix Necklace — Adjustable", by:"Eleganzia",
+         price:"From £16.99", note:"925 sterling silver with 22–24 inch adjustable chain"},
+        {asin:"B012B34GEO", name:"Sacred Trinity Crucifix — Sterling Silver", by:"Little Treasures",
+         price:"From £22.99", note:"Comes with 18 inch chain — beautiful gift"},
       ]
     },
     {
-      name: "Formation",
-      items: [
-        {
-          g:"🎓",
-          t:"Catechism of the Catholic Church",
-          by:"Catholic Truth Society",
-          p:"From £15.99",
-          c:"Formation",
-          link: amz("1574551108"),
-          note: "The complete official Catechism — essential for every Catholic"
-        },
-        {
-          g:"🎓",
-          t:"YouCat — Youth Catechism",
-          by:"Ignatius Press",
-          p:"From £9.99",
-          c:"Formation",
-          link: amz("1586175025"),
-          note: "Perfect for teenagers and young adults"
-        },
+      cat:"Prayer & Devotion",
+      items:[
+        {asin:"0882714538", name:"The Divine Office — Liturgy of the Hours", by:"Catholic Book Publishing",
+         price:"From £39.99", note:"The complete 4-volume set for daily prayer"},
+        {asin:"0882714791", name:"Christian Prayer — One-Volume Breviary", by:"Catholic Book Publishing",
+         price:"From £19.99", note:"The condensed single-volume Liturgy of the Hours"},
+        {asin:"0895558130", name:"Manual of Prayers", by:"NCEA / TAN Books",
+         price:"From £9.99", note:"Comprehensive Catholic prayer book — all the essentials"},
+        {asin:"0884898822", name:"The Rosary — Mysteries, Meditations & Prayers", by:"USCCB",
+         price:"From £7.99", note:"Complete guide to praying the Rosary"},
+        {asin:"1618906526", name:"How to Pray the Rosary", by:"Magnificat",
+         price:"From £5.99", note:"Beautiful illustrated guide for beginners and families"},
       ]
     },
+    {
+      cat:"Formation & Catechesis",
+      items:[
+        {asin:"1574551108", name:"Catechism of the Catholic Church — Pocket Edition", by:"Libreria Editrice",
+         price:"From £9.99", note:"Full text in pocket format"},
+        {asin:"0809145499", name:"United States Catholic Catechism for Adults", by:"USCCB",
+         price:"From £14.99", note:"The authoritative adult catechism for the USA"},
+        {asin:"1592767389", name:"The Case for Catholicism", by:"Trent Horn",
+         price:"From £12.99", note:"Answers to classic and contemporary objections"},
+        {asin:"0898704507", name:"Theology for Beginners", by:"Frank Sheed",
+         price:"From £9.99", note:"The clearest introduction to Catholic theology ever written"},
+        {asin:"1933184027", name:"The Lamb's Supper", by:"Scott Hahn",
+         price:"From £9.99", note:"The Mass as heaven on earth — essential reading"},
+        {asin:"0898704671", name:"Catholicism and Fundamentalism", by:"Karl Keating",
+         price:"From £11.99", note:"The definitive Catholic apologetics handbook"},
+      ]
+    }
   ];
 
   const container = document.getElementById('store-grid');
   if(!container) return;
 
   let html = '';
-  categories.forEach(cat => {
-    html += `<div class="slabel">${cat.name}</div><div class="store-grid-inner">`;
+  products.forEach(cat => {
+    html += `<div class="slabel">${cat.cat}</div>
+    <div class="store-row">`;
     cat.items.forEach(item => {
       html += `
-        <div class="store-card" onclick="window.open('${item.link}','_blank')">
-          <div class="store-icon">${item.g}</div>
-          <div class="store-title">${item.t}</div>
+      <div class="store-card" onclick="window.open('${amz(item.asin)}','_blank')">
+        <div class="store-img-wrap">
+          <img src="${img(item.asin)}" alt="${item.name}" class="store-img"
+               onerror="this.style.display='none';var fb=this.parentNode.querySelector('.store-img-fallback');if(fb)fb.style.display='flex';">
+          <div class="store-img-fallback" style="display:none">📦</div>
+        </div>
+        <div class="store-body">
+          <div class="store-name">${item.name}</div>
           <div class="store-by">${item.by}</div>
           <div class="store-note">${item.note}</div>
-          <div class="store-price">${item.p}</div>
-          <button class="store-btn">View on Amazon →</button>
-        </div>`;
+          <div class="store-bottom">
+            <span class="store-price">${item.price}</span>
+            <button class="store-btn">View on Amazon →</button>
+          </div>
+        </div>
+      </div>`;
     });
     html += `</div>`;
   });
 
-  // Disclaimer
-  html += `<p style="font-size:.75rem;color:var(--if);text-align:center;margin-top:1rem;font-style:italic;padding:0 1rem">
-    As an Amazon Associate, Catholic Companion earns from qualifying purchases.
-    All products are personally selected to support your Catholic life.
-    Prices shown are approximate and may vary.
+  html += `<p class="store-disclaimer">
+    As an Amazon Associate, Catholic Companion earns from qualifying purchases at no extra cost to you.
+    Prices shown are approximate and may vary. All products are personally selected to support Catholic life.
   </p>`;
 
   container.innerHTML = html;
@@ -1823,6 +1810,10 @@ document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFulls
 const VID_BGS=['linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400)','linear-gradient(160deg,#0a0d1a,#1a0d2d 40%,#050510)','linear-gradient(160deg,#1a0800,#2d0808 40%,#0d0300)','linear-gradient(160deg,#0d1a0d,#0a2d0a 40%,#030d03)'];
 function updateVideoBg(i){const bg=document.getElementById('vid-bg-inner');if(bg)bg.style.background=VID_BGS[i]||VID_BGS[0];}
 
+function openCurrentStream(){
+  const btn = document.getElementById('sv-watch-btn');
+  if(btn) btn.click();
+}
 /* ── UTILS ─────────────────────────────────────────────────────────── */
 function tog(id){document.getElementById(id).classList.toggle('open');}
 function openSearch(){document.getElementById('search-overlay').classList.add('open');setTimeout(()=>{const el=document.getElementById('search-input');if(el)el.focus();},100);}
@@ -1859,6 +1850,8 @@ function doShare(){
   else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!'));
   else alert('Share: '+window.location.href);
 }
+
+
 </script>
 </body>
 </html>
