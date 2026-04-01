@@ -77,12 +77,12 @@ body{background:var(--vel);color:var(--ink);font-family:'EB Garamond',Georgia,se
 /* ══ NEWS TICKER BOTTOM ══════════════════════════════════════════════ */
 .news-ticker{
   position:fixed;bottom:0;left:0;right:0;z-index:300;
-  background:#0a0400;border-top:1px solid rgba(201,150,58,.3);
-  height:32px;display:flex;align-items:center;overflow:hidden;
+  background:#0a0400;border-top:2px solid rgba(201,150,58,.5);
+  height:40px;display:flex;align-items:center;overflow:hidden;
 }
 .ticker-label{
   background:var(--cr);color:#fff;
-  font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;
+  font-family:'Cinzel',serif;font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;
   padding:0 12px;height:100%;display:flex;align-items:center;
   flex-shrink:0;z-index:2;position:relative;
   border-right:2px solid rgba(201,150,58,.3);
@@ -90,8 +90,8 @@ body{background:var(--vel);color:var(--ink);font-family:'EB Garamond',Georgia,se
 .ticker-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;position:relative}
 .ticker-track{
   white-space:nowrap;
-  animation:scrollticker 180s linear infinite;
-  font-size:.75rem;color:rgba(232,200,112,.8);
+  animation:scrollticker 130s linear infinite;
+  font-size:1rem;color:rgba(232,200,112,.98);
   position:absolute;left:0;
 }
 @keyframes scrollticker{
@@ -183,7 +183,16 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .rtab.active .rtr{color:var(--gp)}
 .rtab.psalm .rtr{font-style:italic}
 
+.video-layout{display:grid;grid-template-columns:1fr 220px;gap:0;background:#000}
+@media(max-width:640px){.video-layout{grid-template-columns:1fr}.video-sidebar{display:none}}
+.video-main{min-width:0}
+.video-sidebar{background:var(--vl);border-left:1px solid var(--vs);padding:.75rem;display:flex;flex-direction:column;gap:.4rem;max-height:520px;overflow-y:auto}
+.sidebar-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gld);margin-top:.25rem}
+.sidebar-btn{background:#fff;border:1px solid var(--vs);border-radius:6px;padding:.4rem .6rem;font-size:.75rem;color:var(--ink);cursor:pointer;text-align:left;width:100%;transition:border-color .12s}
+.sidebar-btn:hover{border-color:var(--gt)}
+.sidebar-btn.live-btn{background:rgba(139,26,14,.08);border-color:var(--cr);color:var(--cr)}
 .vplayer{position:relative;height:42vh;max-height:380px;min-height:200px;background:#000;overflow:hidden}
+@media(max-width:700px){#page-today .video-layout-grid{grid-template-columns:1fr!important}#sidebar-readings,#sidebar-week{display:none}}
 .voverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;background:linear-gradient(160deg,rgba(21,8,0,0.85),rgba(8,3,0,0.85))}
 .vo-ref{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gt);margin-bottom:.6rem}
 .vo-response{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(201,150,58,.9);margin-bottom:.4rem;font-style:italic}
@@ -348,7 +357,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 .art-read-more{display:inline-block;margin-top:.55rem;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--cr);text-decoration:underline dotted;cursor:pointer}
 
 /* ══ BOTTOM NAV ════════════════════════════════════════════════════════ */
-.bottom-nav{display:none;position:fixed;bottom:32px;left:0;right:0;background:var(--cd);border-top:1px solid rgba(201,150,58,.3);z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav{display:none;position:fixed;bottom:32px;left:0;right:0;background:var(--cd);border-top:2px solid rgba(201,150,58,.5);z-index:200;padding-bottom:env(safe-area-inset-bottom)}
 .bn-inner{display:flex;height:50px}
 .bn-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:none;border:none;color:rgba(232,200,112,.4);font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:color .12s}
 .bn-btn.active{color:var(--gp)}
@@ -442,6 +451,8 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
       <button class="nav-tab" onclick="showPage('library')">Library</button>
       <button class="nav-tab" onclick="showPage('store')">Store</button>
       <button class="nav-tab" onclick="showPage('qa')">Q&amp;A</button>
+      <button class="nav-tab" onclick="showPage('office')">Divine Office</button>
+      <button class="nav-tab" onclick="showPage('about')">About</button>
     </div>
     <div class="nav-right">
       <button class="depth-btn" onclick="openDepth()" id="depth-btn">Growing ▾</button>
@@ -461,54 +472,70 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
 
   <!-- VIDEO PLAYER -->
-  <div class="vplayer-section">
+  <div class="video-layout">
+    <!-- LEFT: Reading tabs + video player -->
+    <div class="video-main">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:0;background:#000">
+
+  <!-- ── LEFT: Main video player ───────────────────────────── -->
+  <div>
     <div class="reading-tabs" id="reading-tabs"></div>
-    <div class="vplayer">
+    <div class="vplayer" id="vplayer-el">
       <div class="voverlay" id="voverlay">
-        <!-- Animated background layers -->
         <div id="vid-bg-inner" style="position:absolute;inset:0;background:linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400);transition:background 1.5s ease;z-index:0"></div>
         <div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0,transparent 40px,rgba(201,150,58,0.04) 40px,rgba(201,150,58,0.04) 41px);z-index:1;pointer-events:none"></div>
-        <div style="position:absolute;top:50%;left:50%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.22) 0%,rgba(139,26,14,0.12) 45%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none"></div>
-        <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.22;animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none" width="70" height="98" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
-        <!-- Reading content -->
-        <div style="position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.5rem;text-align:center">
-          <div class="vo-ref" id="vo-ref" style="margin-bottom:.6rem">Today's Reading</div>
-          <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;border:1px solid rgba(201,150,58,.3);padding:.2rem .75rem;border-radius:20px"></div>
-          <div class="vo-text" id="vo-text" style="font-size:clamp(.88rem,2vw,1.08rem);max-width:520px">Click a reading tab above to begin</div>
+        <div style="position:absolute;top:50%;left:50%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,58,0.18) 0%,transparent 70%);animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none;transform:translate(-50%,-50%)"></div>
+        <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.18;animation:pulse-art 4s ease-in-out infinite;z-index:1;pointer-events:none" width="60" height="84" viewBox="0 0 60 90" fill="rgba(201,150,58,1)"><use href="#cx"/></svg>
+        <div style="position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1.25rem;text-align:center">
+          <div class="vo-ref" id="vo-ref" style="margin-bottom:.5rem">Today's Reading</div>
+          <div class="vo-response" id="vo-response" style="display:none;color:rgba(232,200,112,.9);font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.45rem;border:1px solid rgba(201,150,58,.3);padding:.2rem .7rem;border-radius:20px"></div>
+          <div class="vo-text" id="vo-text" style="font-size:clamp(.85rem,1.8vw,1.05rem);max-width:520px">Click a reading tab above to begin</div>
         </div>
         <div class="vo-ai-lbl">Sacred art · ▶ to hear aloud · ⛶ fullscreen</div>
       </div>
-      <video id="rv" style="display:none" playsinline></video>
     </div>
-    <div class="vcontrols">
+    <div class="vcontrols" id="vcontrols">
       <button class="vctrl" id="play-btn" onclick="togglePlay()">▶</button>
       <button class="vctrl" id="mute-btn" onclick="toggleMute()">🔊</button>
-      <div class="vprog" onclick="seekTo(event)"><div class="vprog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="vprog" onclick="seekProg(event)"><div id="prog-fill" style="height:100%;background:var(--gld);width:0%;border-radius:2px;transition:width .3s"></div></div>
       <span class="vtime" id="vtime">0:00 / 2:30</span>
       <button class="vnext" onclick="nextReading()">Next →</button>
-        <button class="vctrl" onclick="toggleFullscreen()" id="fs-btn" title="Fullscreen">⛶</button>
+      <button class="vctrl" onclick="toggleFullscreen()" id="fs-btn" title="Fullscreen">⛶</button>
     </div>
     <div class="vshare">
       <span class="vsbl">Share:</span>
-      <button class="vshbtn" onclick="shareVideo('download')">⬇ Download</button>
-      <button class="vshbtn" onclick="shareVideo('youtube')">▶ YouTube</button>
-      <button class="vshbtn" onclick="shareVideo('tiktok')">♪ TikTok</button>
-      <button class="vshbtn" onclick="shareVideo('facebook')">f Facebook</button>
-      <button class="vshbtn" onclick="shareVideo('rumble')">R Rumble</button>
+      <button class="sbtn" onclick="doDownload()">⬇ Download</button>
+      <button class="sbtn" onclick="window.open('https://www.youtube.com/','_blank')">▶ YouTube</button>
+      <button class="sbtn" onclick="window.open('https://www.tiktok.com/','_blank')">♪ TikTok</button>
+      <button class="sbtn" onclick="window.open('https://www.facebook.com/','_blank')">f Facebook</button>
+      <button class="sbtn" onclick="window.open('https://rumble.com/','_blank')">R Rumble</button>
     </div>
   </div>
 
-  <div class="day-strip" id="day-strip"></div>
-  <div id="day-body"></div>
-</div>
+  <!-- ── RIGHT: Sidebar — readings list + upcoming ──────────── -->
+  <div style="background:#0d0600;border-left:1px solid rgba(201,150,58,.18);display:flex;flex-direction:column">
+    <div style="padding:.6rem .75rem;border-bottom:1px solid rgba(201,150,58,.15);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,150,58,.7)">Today's Readings</div>
+    <div id="sidebar-readings" style="flex:1;overflow-y:auto;padding:.4rem 0"></div>
+    <div style="padding:.6rem .75rem;border-top:1px solid rgba(201,150,58,.15);border-bottom:1px solid rgba(201,150,58,.15);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,150,58,.7)">This Week</div>
+    <div id="sidebar-week" style="overflow-y:auto;max-height:160px;padding:.4rem 0"></div>
+  </div>
 
-<!-- ════════════════════════════════════ PAGE: WEEK ════════════════════════════════════ -->
-<div class="page" id="page-week">
-  <div class="hero"><svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
-    <div class="hero-inner">
-      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block"></span>Week of 22–28 March 2026</div>
-      <div class="hero-date">Walking in the Light of the Word</div>
-      <div class="hero-sub">Ordinary Time XIV · Seven days, one story</div>
+</div>
+<!-- end video layout -->
+
+    </div>
+
+    <!-- RIGHT: Day chooser + quick actions -->
+    <div class="video-sidebar">
+      <div class="sidebar-label">This week</div>
+      <div id="day-strip-sidebar"></div>
+      <div class="sidebar-label" style="margin-top:1rem">Quick actions</div>
+      <button class="sidebar-btn" onclick="ttsRead()">🔊 Listen to readings</button>
+      <button class="sidebar-btn live-btn" onclick="showPage('live')">● Watch Live Mass</button>
+      <button class="sidebar-btn" onclick="showPage('adoration')">🕯 Adoration</button>
+      <button class="sidebar-btn" onclick="showPage('office')">🙏 Divine Office</button>
+      <div class="sidebar-label" style="margin-top:1rem">Liturgy today</div>
+      <div id="sidebar-liturgy" style="font-size:.8rem;color:var(--if);font-style:italic;padding:.4rem 0"></div>
     </div>
   </div>
   <div class="content">
@@ -575,34 +602,9 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
   <div class="adoration-stream">
     <div class="adora-iframe-wrap">
-      <div id="adora-iframe" style="height:280px;background:linear-gradient(160deg,#0a0d1a,#1a0d2d);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
-  border-radius:var(--r);border:1px solid rgba(201,150,58,.2)">
-  <div style="font-size:2rem">🕯</div>
-  <div style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--gp)">Eucharistic Adoration</div>
-  <div style="font-size:.82rem;color:rgba(232,200,112,.7);font-style:italic">
-    Perpetual adoration — select a chapel below
-  </div>
-  <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;padding:0 1rem">
-    <button onclick="window.open('https://www.ewtn.com/tv/watch-live','_blank')"
-      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
-      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">EWTN Chapel</button>
-    <button onclick="window.open('https://www.youtube.com/@SaintClementShrine/streams','_blank')"
-      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
-      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">Saint Clement</button>
-    <button onclick="window.open('https://www.youtube.com/@DivineMercyShrineMA/streams','_blank')"
-      style="background:var(--cr);color:#fff;border:none;border-radius:5px;
-      padding:.4rem .9rem;font-size:.72rem;cursor:pointer">Divine Mercy</button>
-  </div>
-</div>
-    </div>
-    <div class="candle-row">
-      <div class="candle" onclick="lightCandle(0)"><div class="c-flame" id="cf0"></div><div class="c-body"></div><div class="c-lbl">Light</div></div>
-      <div class="candle" onclick="lightCandle(1)"><div class="c-flame" id="cf1"></div><div class="c-body"></div><div class="c-lbl">Pray</div></div>
-      <div class="candle" onclick="lightCandle(2)"><div class="c-flame" id="cf2"></div><div class="c-body"></div><div class="c-lbl">Offer</div></div>
-      <div class="candle" onclick="lightCandle(3)"><div class="c-flame" id="cf3"></div><div class="c-body"></div><div class="c-lbl">Adore</div></div>
-      <div class="candle" onclick="lightCandle(4)"><div class="c-flame" id="cf4"></div><div class="c-body"></div><div class="c-lbl">Rest</div></div>
-    </div>
+      <div class="stream-grid" id="adoration-grid" style="padding:1rem 0">
+    <!-- Stream cards built by buildAdorationGrid() -->
+  </div></div>
   </div>
   <div class="content">
     <div class="slabel">Switch stream</div>
@@ -834,6 +836,122 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
   </div>
 </div>
 
+
+<!-- ═══════════════════ PAGE: DIVINE OFFICE ═══════════════════ -->
+<div class="page" id="page-office">
+  <div class="hero">
+    <svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+    <div class="hero-inner">
+      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block;margin-right:6px"></span>Liturgy of the Hours</div>
+      <div class="hero-date">The Divine Office</div>
+      <div class="hero-sub">Pray with the whole Church — morning, midday, evening and night</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="slabel">The Church prays at every hour</div>
+    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.25rem">
+      When you pray the Divine Office, you are never praying alone. At this very moment, 
+      monks in monasteries, priests in their studies, and the faithful on buses and trains 
+      around the world are praying the same psalms, the same readings, the same prayers. 
+      The Liturgy of the Hours is the heartbeat of the Church's day.
+    </p>
+    <div class="pull-quote">"Seven times a day I praise you." — Psalm 119:164</div>
+
+    <div class="slabel" style="margin-top:1.5rem">Today's hours</div>
+    <div id="office-hours-list"></div>
+
+    <div class="slabel" style="margin-top:1.5rem">Listen to the Office</div>
+    <div class="card" style="margin-bottom:.85rem">
+      <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--ink);margin-bottom:.75rem;font-weight:bold">Official audio sources</div>
+      <div class="share-strip" style="flex-wrap:wrap;gap:.5rem">
+        <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">📿 iBreviary (free, global)</button>
+        <button class="sbtn" onclick="window.open('https://www.magnificat.net','_blank')">🎵 Magnificat Audio</button>
+        <button class="sbtn" onclick="window.open('https://universalis.com','_blank')">📖 Universalis (free)</button>
+        <button class="sbtn" onclick="window.open('https://www.divineoffice.org','_blank')">🔊 DivineOffice.org (US)</button>
+      </div>
+      <p style="font-size:.8rem;color:var(--if);margin-top:.85rem;line-height:1.6;font-style:italic">
+        Full integrated audio Office — all psalms, antiphons, and proper texts for every day — 
+        is being built for Stage 2. These links provide the complete Office now.
+      </p>
+    </div>
+
+    <div class="prayer-panel">
+      <svg class="pp-cx" width="44" height="62" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+      <div class="p-lbl">Night Prayer — Compline</div>
+      <div class="p-txt">
+        Into your hands, Lord, I commend my spirit.<br>
+        <em>Into your hands, Lord, I commend my spirit.</em><br><br>
+        You have redeemed us, Lord God of truth.<br>
+        <em>Into your hands, Lord, I commend my spirit.</em><br><br>
+        Keep us, Lord, as the apple of your eye.<br>
+        Hide us in the shadow of your wings.<br><br>
+        May almighty God grant us a restful night and a peaceful death. Amen.<br><br>
+        <em>Salve Regina — Hail, holy Queen, Mother of Mercy...</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PAGE: ABOUT ═══════════════════ -->
+<div class="page" id="page-about">
+  <div class="hero">
+    <svg class="hero-cx" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+    <div class="hero-inner">
+      <div class="hero-badge"><span style="width:5px;height:5px;border-radius:50%;background:var(--gt);display:inline-block;margin-right:6px"></span>Our vision</div>
+      <div class="hero-date">What Catholic Companion Is</div>
+      <div class="hero-sub">And what it is becoming</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="slabel">The vision</div>
+    <div class="pull-quote">
+      "The digital continent is a mission field, and the Church is called to be there. 
+      What is needed is not another Catholic app — it is a Catholic digital city."
+    </div>
+    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1rem">
+      Catholic Companion is a free, integrated digital platform for the global Catholic Church. 
+      It launched on 27 March 2026 and is actively growing every week. It serves the faithful, 
+      seekers, children, students, priests, and anyone curious about the faith — 
+      in ten languages, on any device, at no cost.
+    </p>
+    <p style="font-size:1rem;color:var(--is);line-height:1.88;margin-bottom:1.25rem;font-style:italic">
+      This is not a finished product. It is a living platform, shaped by the community it serves.
+    </p>
+
+    <div class="slabel">What is live now</div>
+    <div id="about-features-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.65rem;margin-bottom:1.25rem"></div>
+
+    <div class="slabel">What is coming — Stage 2</div>
+    <div class="card" style="margin-bottom:.75rem">
+      <div style="font-size:.95rem;color:var(--is);line-height:1.88">
+        AI-illustrated daily reading videos · Full integrated Divine Office audio · 
+        Faithful Plus subscription (£3.99/mo) · Parish and diocese tools · 
+        PWA install (add to home screen) · Auto-updating lectionary · 
+        Live Catholic news fully integrated
+      </div>
+    </div>
+    <div class="slabel">Contact</div>
+    <div class="card">
+      <div style="font-size:.95rem;color:var(--is);line-height:2">
+        General: <strong>hello@anthonyhq.com</strong><br>
+        Theological advisory: <strong>hello@anthonyhq.com</strong><br>
+        Articles & contributions: <strong>hello@anthonyhq.com</strong><br>
+        Parish partnerships: <strong>hello@anthonyhq.com</strong><br>
+        Live platform: <a href="https://companion.anthonyhq.com" style="color:var(--gld)">companion.anthonyhq.com</a>
+      </div>
+    </div>
+    <div class="prayer-panel" style="margin-top:1.25rem">
+      <svg class="pp-cx" width="44" height="62" viewBox="0 0 60 90" fill="var(--gp)"><use href="#cx"/></svg>
+      <div class="p-lbl">Week 7 of 52 Startups in 52 Weeks</div>
+      <div class="p-txt" style="font-size:.88rem">
+        Catholic Companion was built by a solo Catholic founder in seven days as part of 
+        the 52 Startups in 52 Weeks challenge. It launched live on 27 March 2026. 
+        The build continues every week. This is not the finished product. It is the beginning.
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <div class="bn-inner">
@@ -856,6 +974,7 @@ nav.topnav{background:var(--cd);position:sticky;top:0;z-index:200;border-bottom:
 <script>
 
 
+
 /* ── DATA ──────────────────────────────────────────────────────────── */
 const NEWS_ITEMS=[
   'Catholic Companion is now live — daily scripture, live Mass, adoration and more at companion.anthonyhq.com',
@@ -873,87 +992,53 @@ const NEWS_ITEMS=[
 ];
 
 const DAYS=[
-  {short:"Sun",full:"Sunday, 22 March",season:"Ordinary Time XIV",colour:"Green",saint:"The Lord's Day",solemnity:false,
-  readings:[
-    {id:"first",label:"First Reading",ref:"Isaiah 55:10–11",text:"As the rain and the snow come down from heaven and do not return to it without watering the earth and making it bud and flourish... so is my word that goes out from my mouth: it will not return to me empty, but will accomplish what I desire and achieve the purpose for which I sent it.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 65:10–14",text:"You care for the land and water it; you enrich it abundantly. The streams of God are filled with water to provide the people with grain, for so you have ordained it. The year is crowned with your bounty, and your carts overflow with abundance.",response:"The seed that falls on good ground will yield a fruitful harvest."},
-    {id:"second",label:"Second Reading",ref:"Romans 8:18–23",text:"I consider that our present sufferings are not worth comparing with the glory that will be revealed in us. For the creation waits in eager expectation for the children of God to be revealed...",response:null},
-    {id:"gospel",label:"Holy Gospel",ref:"Mark 4:1–20",text:"Again Jesus began to teach by the lake. The crowd that gathered was so large that He got into a boat. He taught them many things by parables: 'Listen! A farmer went out to sow his seed...'",response:null},
-  ],
-  reflection:`<p>Jesus sits in a boat pushed out from the shore and the crowd presses against the water's edge to hear Him. He begins to speak in a parable — a sower goes out to sow. The seed is scattered with what looks like recklessness: on the path, on rocky ground, among thorns, and on good soil.</p><p>When the disciples ask Him privately what it means, He is explicit: the seed is the Word. The soils are not different categories of people so much as different conditions of the same heart on different days.</p>`,
-  takeaway:"The Word is sown with extravagant generosity. The question is: what kind of ground am I offering Him today?",
-  prayer:"Lord Jesus, Sower of the Word, prepare the soil of my heart this week. Root out the thorns of distraction and let what You speak bear fruit — thirty, sixty, a hundredfold. Amen.",
-  discuss:["Which of the four soils feels closest to describing your heart right now?","The Sower scatters seed on every kind of ground without hesitation. What does this say about how God approaches every person?","Isaiah says God's Word accomplishes what He intends. Where have you seen this in your own life?"],
-  ccc:"CCC §§101–141 — God's Word in Sacred Scripture",
-  ccc_quote:"\"In Sacred Scripture, the Church constantly finds her nourishment and her strength.\" (CCC §104)"},
-  {short:"Mon",full:"Monday, 23 March",season:"Ordinary Time XIV",colour:"Green",saint:"St. Turibius of Mogrovejo",saintKey:"turibius",
-  readings:[
-    {id:"first",label:"First Reading",ref:"Isaiah 50:4–7",text:"The Sovereign Lord has given me a well-instructed tongue, to know the word that sustains the weary. He wakens me morning by morning, wakens my ear to listen like one being instructed.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 22:8–9,17–18",text:"All who see me mock me; they hurl insults, shaking their heads: 'He trusts in the Lord; let the Lord rescue him.' Dogs surround me, a pack of villains encircles me.",response:"My God, my God, why have you abandoned me?"},
-    {id:"gospel",label:"Holy Gospel",ref:"Mark 4:1–20",text:"He told them: 'Don't you understand this parable? The farmer sows the word. Some people are like seed along the path, where the word is sown. As soon as they hear it, Satan comes and takes away the word that was sown in them.'",response:null},
-  ],
-  reflection:`<p>Isaiah's Servant opens the week: <em>"Morning by morning He opens my ear to hear as those who are taught."</em> The image is not of a scholar with his books but of a learner who wakes each day to find a Teacher already present, already speaking. This is how God's Word comes to us — not as information to be mastered once, but as a living address that must be received anew every morning.</p>`,
-  takeaway:"God speaks morning by morning. The discipline of the spiritual life is learning to listen before we speak.",
-  prayer:"Father, open my ear each morning as You opened the ear of Your Servant. Make me a learner, not a teacher, before Your Word today. Amen.",
-  discuss:["What would it mean practically to 'open your ear' before you speak today?","The Servant hears and then suffers for it. Have you experienced a cost for following what God asked?","How does St. Turibius's ministry across the mountains of Peru illustrate 'morning by morning' listening?"],
-  ccc:"CCC §§142–175",ccc_quote:"\"By faith, man completely submits his intellect and his will to God.\" (CCC §143)"},
-  {short:"Tue",full:"Tuesday, 24 March",season:"Ordinary Time XIV",colour:"Green",saint:"St. Óscar Romero",saintKey:"romero",
-  readings:[
-    {id:"first",label:"First Reading",ref:"Isaiah 50:4–9",text:"The Sovereign Lord has given me a well-instructed tongue. He wakens me morning by morning. I offered my back to those who beat me, my cheeks to those who pulled out my beard; I did not hide my face from mocking and spitting. Because the Sovereign Lord helps me, I will not be disgraced.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 69:8–10",text:"For I endure scorn for your sake, and shame covers my face. I am a foreigner to my own family, a stranger to my own mother's children; for zeal for your house consumes me.",response:"Lord, in your great love, answer me."},
-    {id:"gospel",label:"Holy Gospel",ref:"Mark 4:26–34",text:"He also said: 'This is what the kingdom of God is like. A man scatters seed on the ground. Night and day, whether he sleeps or gets up, the seed sprouts and grows, though he does not know how.' Again: 'What shall we say the kingdom of God is like? It is like a mustard seed, which is the smallest of all seeds on earth.'",response:null},
-  ],
-  reflection:`<p>Today Jesus gives us two of the shortest parables in Mark, side by side: the seed that grows secretly and the mustard seed. Both are provocations against impatience. The farmer scatters seed and then sleeps. Rises. Sleeps again. <em>"He does not know how"</em> the seed sprouts.</p><p>The mustard seed is even more subversive. The smallest of all seeds becomes the greatest shrub, large enough for the birds to nest in its shade. Jesus is quietly saying: this small movement of twelve fishermen and sinners is the fulfilment of all the prophets saw.</p>`,
-  takeaway:"The Kingdom grows in secret, beyond our management. Our task is to sow faithfully and trust the Sower.",
-  prayer:"Lord, cure me of my need to see immediate results. Let me sow the small seeds of prayer, kindness, and fidelity today, and trust that You are growing them. Amen.",
-  discuss:["Where are you tempted to dig up the seed to check on its progress?","St. Óscar Romero gave his life at the altar on this very day in 1980. How does his story illustrate the mustard seed?","What is the smallest act of faithfulness you feel called to today?"],
-  ccc:"CCC §§541–556",ccc_quote:"\"The Kingdom of heaven is at hand.\" (CCC §541)"},
-  {short:"Wed",full:"Wednesday, 25 March",season:"Solemnity of the Annunciation",colour:"White",saint:"Annunciation of the Lord",saintKey:"annunciation",solemnity:true,
-  readings:[
-    {id:"first",label:"First Reading",ref:"Isaiah 7:10–14",text:"Therefore the Lord himself will give you a sign: The virgin will conceive and give birth to a son, and will call him Immanuel.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 40:7–11",text:"Here I am, Lord; I come to do your will. I have desired to do your will, my God; your law is within my heart. I proclaim your saving acts in the great assembly.",response:"Here am I, Lord; I come to do your will."},
-    {id:"second",label:"Second Reading",ref:"Hebrews 10:4–10",text:"It is impossible for the blood of bulls and goats to take away sins. Therefore, when Christ came into the world, he said: 'Here I am — I have come to do your will, my God.'",response:null},
-    {id:"gospel",label:"Holy Gospel",ref:"Luke 1:26–38",text:"God sent the angel Gabriel to Nazareth. The angel went to her and said: 'Greetings, you who are highly favoured! The Lord is with you.' Mary was greatly troubled at his words and wondered what kind of greeting this might be. The angel said to her: 'Do not be afraid, Mary; you have found favour with God. You will conceive and give birth to a son, and you are to call him Jesus.'",response:null},
-  ],
-  reflection:`<p>Today Ordinary Time pauses entirely. The Solemnity of the Annunciation falls on Wednesday and the whole Church rings with the moment when human history turned on the word of a young woman in Nazareth. Gabriel enters. He speaks. And everything hangs in the air until Mary responds.</p><p>She says one of the most consequential sentences in the history of the universe: <em>"Behold, I am the handmaid of the Lord. Let it be done to me according to Your word."</em> This is the week's entire meditation made flesh. Mary heard. She received. The Word became flesh.</p>`,
-  takeaway:"Mary's fiat is the perfect answer to every question this week has raised: what does it look like to truly hear and receive the Word of God?",
-  prayer:"Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners now and at the hour of our death. Amen.",
-  discuss:["Where is God asking you to say yes to something you don't fully understand?","The prophecy was given 700 years before the Annunciation. How does this deepen your trust in God's promises?","Why is Our Lady the perfect centre of a week about hearing the Word?"],
-  ccc:"CCC §§484–511",ccc_quote:"\"The Virgin Mary most perfectly embodies the obedience of faith.\" (CCC §148)"},
-  {short:"Thu",full:"Thursday, 26 March",season:"Ordinary Time XIV",colour:"Green",saint:"St. Ludger of Münster",saintKey:"ludger",
-  readings:[
-    {id:"first",label:"First Reading",ref:"Genesis 17:3–9",text:"Abram fell facedown, and God said to him: 'As for me, this is my covenant with you: You will be the father of many nations. No longer will you be called Abram; your name will be Abraham.'",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 105:4–9",text:"Look to the Lord and his strength; seek his face always. Remember the wonders he has done. He remembers his covenant forever, the promise he made for a thousand generations.",response:"The Lord remembers his covenant for ever."},
-    {id:"gospel",label:"Holy Gospel",ref:"Mark 4:21–25",text:"He said to them: 'Do you bring in a lamp to put it under a bowl or a bed? Instead, don't you put it on its stand? For whatever is hidden is meant to be disclosed. If anyone has ears to hear, let them hear.'",response:null},
-  ],
-  reflection:`<p>Jesus asks: <em>"Is a lamp brought in to be put under a bushel, or under a bed?"</em> Obviously not. Yet in this week's context the lamp is the Word itself. Those who have heard the Word in Mass year after year carry a lamp. The question He is asking is whether we are hiding it — under the bushel of privacy, under the bed of embarrassment — or placing it on the stand.</p>`,
-  takeaway:"Faith received but never shared gradually dims. The Word grows by being spoken.",
-  prayer:"Lord, give me the courage to place the lamp where it belongs — in my family, my workplace, my friendships. Take away the bushel of my embarrassment. Amen.",
-  discuss:["In what area of your life do you tend to hide the lamp?","How does St. Ludger's missionary work illustrate placing the lamp on the stand?","Jesus says the measure you give is the measure you get. Have you experienced this?"],
-  ccc:"CCC §§897–913",ccc_quote:"\"By their vocation, the laity are called to be present in those places where only through them can the Church be the salt of the earth.\" (CCC §900)"},
-  {short:"Fri",full:"Friday, 27 March",season:"Ordinary Time XIV",colour:"Green",saint:"St. Rupert of Salzburg",saintKey:"rupert",
-  readings:[
-    {id:"first",label:"First Reading",ref:"Jeremiah 20:10–13",text:"I hear many whispering, 'Terror on every side! Denounce him! Let's denounce him!' All my friends are waiting for me to slip. But the Lord is with me like a mighty warrior; so my persecutors will stumble and not prevail.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 18:2–7",text:"I love you, Lord, my strength. The Lord is my rock, my fortress and my deliverer; my God is my rock, in whom I take refuge, my shield and the horn of my salvation, my stronghold.",response:"I love you, Lord, my strength."},
-    {id:"gospel",label:"Holy Gospel",ref:"John 7:1–2,10,25–30",text:"Jesus went around in Galilee purposely staying away from Judea because the Jewish leaders there were looking for a way to kill Him. However, He went also, not publicly, but in secret.",response:null},
-  ],
-  reflection:`<p>Friday deepens the week's mood. Jeremiah cries out: <em>"Terror is on every side! Denounce him!"</em> His trusted friends wait for him to stumble. And yet he praises in the middle of suffering: <em>"Sing to the Lord; praise the Lord!"</em> This is not optimism but faith anchored in a track record: God has rescued before, and will again.</p>`,
-  takeaway:"Faithfulness to the Word will sometimes cost us. Jeremiah shows it is worth it.",
-  prayer:"Lord, when faithfulness to Your Word brings opposition, let me sing with Jeremiah: 'The Lord is with me as a dread warrior.' Amen.",
-  discuss:["Have you experienced opposition for living your faith openly?","Jeremiah praises God in the middle of suffering. What enables that kind of praise?","Why does Jesus move in secret in today's Gospel?"],
-  ccc:"CCC §§2471–2474",ccc_quote:"\"The duty of Christians to take part in the life of the Church impels them to act as witnesses of the Gospel.\" (CCC §2472)"},
-  {short:"Sat",full:"Saturday, 28 March",season:"Saturday memorial of Our Lady",colour:"White",saint:"Saturday Memorial of Our Lady",saintKey:"our_lady_sat",
-  readings:[
-    {id:"first",label:"First Reading",ref:"Jeremiah 11:18–20",text:"The Lord revealed their plot to me. I had been like a gentle lamb led to the slaughter; I did not realize that they had plotted against me. But, Lord Almighty, you who judge righteously and test the heart and mind, let me see your vengeance on them.",response:null},
-    {id:"psalm",label:"Responsorial Psalm",ref:"Ps 7:2–3,9–12",text:"Lord my God, I take refuge in you; save and deliver me from all who pursue me. You are a righteous God who searches minds and hearts.",response:"Lord, my God, I take refuge in you."},
-    {id:"gospel",label:"Holy Gospel",ref:"John 7:40–53",text:"On hearing his words, some of the people said, 'Surely this man is the Prophet.' Others said, 'He is the Messiah.' Even the officers sent to arrest Him returned empty-handed: 'No one ever spoke the way this man does.'",response:null},
-  ],
-  reflection:`<p>On Saturdays through Ordinary Time the Church keeps a quiet memorial of Our Lady. Today's Gospel shows the crowd bitterly divided over Jesus. Even the officers sent to arrest Him return empty-handed: <em>"No one ever spoke like this man."</em> Our Lady heard the Word before anyone else. She stood at the foot of the Cross. The week closes not with doctrine but with a person — the woman who shows us what it looks like to receive the Word completely.</p>`,
-  takeaway:"Our Lady is the model of every disciple: she heard the Word, received the Word, and bore the Word into the world.",
-  prayer:"Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry. O clement, O loving, O sweet Virgin Mary. Amen.",
-  discuss:["The week began with Our Lady at the Annunciation and ends with her today. What thread do you see?","What have you been pondering in your heart this week?","What would it mean to close the week by simply holding what you have received?"],
-  ccc:"CCC §§963–975",ccc_quote:"\"Mary's role in the Church is inseparable from her union with Christ and flows directly from it.\" (CCC §964)"}
-];
+  {short:"Sun",full:"Sunday, 29 March 2026",season:"Palm Sunday",colour:"Red",saint:"Palm Sunday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Isaiah 50:4-7",response:null,text:"The Lord God hath given me a learned tongue, that I should know how to uphold by word him that is weary: he wakeneth in the morning, in the morning he wakeneth my ear, that I may hear him as a master. The Lord God hath opened my ear, and I do not resist: I have not gone back. I gave my body to the strikers, and my cheeks to them that plucked them: I have not turned away my face from them that rebuked me, and spit upon me. The Lord God is my helper, therefore am I not confounded: therefore have I set my face as a most hard rock, and I know that I shall not be confounded."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 22:8-9,17-18,19-20,23-24",response:"My God, my God, why hast thou forsaken me?",text:"All they that saw me have laughed me to scorn: they have spoken with the lips, and wagged the head. He hoped in the Lord, let him deliver him. For many dogs have encompassed me: the council of the malignant hath besieged me. They have dug my hands and feet. They have numbered all my bones. They parted my garments amongst them; and upon my vesture they cast lots. But thou, O Lord, remove not thy help to a distance from me; look towards my defence."},
+    {id:"second",label:"Second Reading",ref:"Philippians 2:6-11",response:null,text:"Christ Jesus, who being in the form of God, thought it not robbery to be equal with God: but emptied himself, taking the form of a servant, being made in the likeness of men. He humbled himself, becoming obedient unto death, even to the death of the cross. For which cause God also hath exalted him, and hath given him a name which is above all names: that in the name of Jesus every knee should bow, and that every tongue should confess that the Lord Jesus Christ is in the glory of God the Father."},
+    {id:"gospel",label:"Holy Gospel",ref:"Matthew 26:14-27:66 (Passion)",response:null,text:"Then went one of the twelve, who was called Judas Iscariot, to the chief priests, and said: What will you give me, and I will deliver him unto you? But they appointed him thirty pieces of silver. And whilst they were at supper, Jesus took bread, and blessed, and broke: and gave to his disciples, and said: Take ye, and eat. This is my body. And taking the chalice, he gave thanks, and gave to them, saying: Drink ye all of this. For this is my blood of the new testament, which shall be shed for many unto remission of sins. My Father, if it be possible, let this chalice pass from me. Nevertheless not as I will, but as thou wilt. They say all: Let him be crucified. And Jesus again crying with a loud voice, yielded up the ghost. And behold the veil of the temple was rent in two from the top even to the bottom. And the centurion said: Indeed this was the Son of God."}
+   ],reflection:"We begin Holy Week carrying palms and end it at the foot of the Cross.",takeaway:"Walk through Holy Week. Do not skip from palms to Easter.",discuss:["Where do you wave palms but walk away when the cost becomes clear?"],ccc:"CCC 571-630"},
+  {short:"Mon",full:"Monday, 30 March 2026",season:"Holy Monday",colour:"Violet",saint:"Holy Monday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Isaiah 42:1-7",response:null,text:"Behold my servant, I will uphold him: my elect, my soul delighteth in him. I have given my spirit upon him, he shall bring forth judgment to the Gentiles. He shall not cry, nor have respect to person, neither shall his voice be heard abroad. The bruised reed he shall not break, and smoking flax he shall not quench. I the Lord have called thee in justice, and taken thee by the hand, and preserved thee. And I have given thee for a covenant of the people, for a light of the Gentiles: that thou mightest open the eyes of the blind, and bring forth the prisoner out of prison."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 27:1-3,13-14",response:"The Lord is my light and my salvation.",text:"The Lord is my light and my salvation, whom shall I fear? The Lord is the protector of my life: of whom shall I be afraid? Whilst the wicked draw near against me, to eat my flesh, my enemies that trouble me have themselves been weakened, and have fallen. If armies in camp should stand together against me, my heart shall not fear. I believe to see the good things of the Lord in the land of the living. Expect the Lord, do manfully, and let thy heart take courage."},
+    {id:"gospel",label:"Holy Gospel",ref:"John 12:1-11",response:null,text:"Jesus therefore, six days before the pasch, came to Bethania, where Lazarus had been dead, whom Jesus raised to life. Mary therefore took a pound of ointment of right spikenard, of great price, and anointed the feet of Jesus, and wiped his feet with her hair; and the house was filled with the odour of the ointment. Then Judas Iscariot said: Why was not this ointment sold for three hundred pence, and given to the poor? He said this, not because he cared for the poor; but because he was a thief. Jesus therefore said: Let her alone, that she may keep it against the day of my burial. For the poor you have always with you; but me you have not always."}
+   ],reflection:"Mary anoints Jesus with costly perfume. Judas objects. The whole of Holy Week is in this one scene.",takeaway:"What is your most costly gift for Christ this Holy Week?",discuss:["What would extravagant love for Christ cost you this week?"],ccc:"CCC 557-560"},
+  {short:"Tue",full:"Tuesday, 31 March 2026",season:"Holy Tuesday",colour:"Violet",saint:"Holy Tuesday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Isaiah 49:1-6",response:null,text:"Give ear, ye islands, and hearken, ye people from afar. The Lord hath called me from the womb, from the bowels of my mother he hath been mindful of my name. And he hath made my mouth like a sharp sword: in the shadow of his hand he hath protected me. And he said to me: Thou art my servant Israel, for in thee will I glory. And now saith the Lord: Behold, I have given thee to be the light of the Gentiles, that thou mayst be my salvation even to the farthest part of the earth."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 71:1-4,15",response:"I will praise your name for ever, Lord.",text:"Give to the king thy judgment, O God: and to the king thy justice: to judge thy people with justice, and thy poor with judgment. Let the mountains receive peace for the people: and the hills justice. He shall judge the poor of the people, and he shall save the children of the poor. My mouth shall be filled with thy praise, that I may sing thy glory; thy greatness all the day long."},
+    {id:"gospel",label:"Holy Gospel",ref:"John 13:21-33,36-38",response:null,text:"When Jesus had said these things, he was troubled in spirit; and he testified, and said: Amen, amen I say to you, one of you shall betray me. The disciples looked one upon another, doubting of whom he spoke. He therefore, leaning on the breast of Jesus, saith to him: Lord, who is it? Jesus answered: He it is to whom I shall reach bread dipped. And after the morsel, Satan entered into him. And Jesus said to him: That which thou dost, do quickly. Simon Peter saith to him: Lord, whither goest thou? Jesus answered: Whither I go, thou canst not follow me now; but thou shalt follow hereafter. Wilt thou lay down thy life for me? Amen, amen I say to thee, the cock shall not crow, till thou deny me thrice."}
+   ],reflection:"Jesus is troubled but walks forward freely. He is in control even as he walks into the darkness.",takeaway:"Humility means knowing you are also capable of Peter's failure.",discuss:["Jesus walks freely into the darkness. Where do you need to walk forward despite fear?"],ccc:"CCC 595-598"},
+  {short:"Wed",full:"Wednesday, 1 April 2026",season:"Holy Wednesday",colour:"Violet",saint:"Spy Wednesday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Isaiah 50:4-9",response:null,text:"The Lord God hath given me a learned tongue, that I should know how to uphold by word him that is weary: he wakeneth in the morning, in the morning he wakeneth my ear, that I may hear him as a master. The Lord God hath opened my ear, and I do not resist: I have not gone back. I gave my body to the strikers, and my cheeks to them that plucked them: I have not turned away my face from them that rebuked me, and spit upon me. The Lord God is my helper, therefore am I not confounded: therefore have I set my face as a most hard rock. He is near that justifieth me, who will contend with me? Behold the Lord God is my helper: who is he that shall condemn me?"},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 69:8-10,21-22,31,33-34",response:"Lord, in your great love, answer me.",text:"Because for thy sake I have borne reproach; shame hath covered my face. I am become a stranger to my brethren, and an alien to the sons of my mother. For the zeal of thy house hath eaten me up: and the reproaches of them that reproached thee are fallen upon me. And they gave me gall for my food, and in my thirst they gave me vinegar to drink. For the Lord will hear the poor, and will not despise his prisoners."},
+    {id:"gospel",label:"Holy Gospel",ref:"Matthew 26:14-25",response:null,text:"Then went one of the twelve, who was called Judas Iscariot, to the chief priests, and said: What will you give me, and I will deliver him unto you? But they appointed him thirty pieces of silver. And from thenceforth he sought opportunity to betray him. But Jesus said: Go ye into the city to a certain man, and say to him: The master saith, My time is near at hand, with thee I make the pasch with my disciples. And whilst they were eating, he said: Amen I say to you, that one of you is about to betray me. And Judas that betrayed him, answering, said: Is it I, Rabbi? He saith to him: Thou hast said it."}
+   ],reflection:"Judas sells the Lord for thirty pieces of silver. Every soul in Holy Week is somewhere between Mary's perfume and Judas's coins.",takeaway:"What are your thirty pieces of silver this Lent?",discuss:["What cheap bargains have cost you something precious?"],ccc:"CCC 557-560"},
+  {short:"Thu",full:"Thursday, 2 April 2026",season:"Holy Thursday",colour:"White",saint:"Holy Thursday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Exodus 12:1-8,11-14",response:null,text:"And the Lord said to Moses and Aaron in the land of Egypt: This month shall be to you the beginning of months: it shall be the first in the months of the year. And you shall keep the lamb until the fourteenth day of this month: and the whole multitude of the children of Israel shall sacrifice it in the evening. And they shall take of the blood thereof, and put it upon both the side posts, and on the upper door posts of the houses, wherein they shall eat it. And they shall eat the flesh that night roasted at fire: and unleavened bread with wild lettuce. Thus you shall eat it: for it is the Phase of the Lord. And the blood shall be unto you for a sign: and I shall see the blood, and shall pass over you. And this day shall be for a memorial to you."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 116:12-13,15-18",response:"Our blessing-cup is a communion with the Blood of Christ.",text:"What shall I render to the Lord, for all the things that he hath rendered to me? I will take the chalice of salvation; and I will call upon the name of the Lord. Precious in the sight of the Lord is the death of his saints. O Lord, for I am thy servant and the son of thy handmaid. Thou hast broken my bonds: I will sacrifice to thee the sacrifice of praise, and I will call upon the name of the Lord."},
+    {id:"second",label:"Second Reading",ref:"1 Corinthians 11:23-26",response:null,text:"For I have received of the Lord that which also I delivered unto you, that the Lord Jesus, the same night in which he was betrayed, took bread. And giving thanks, broke it, and said: Take ye, and eat: this is my body, which shall be delivered for you: this do for the commemoration of me. In like manner also the chalice, after he had supped, saying: This chalice is the new testament in my blood: this do ye, as often as you shall drink, for the commemoration of me. For as often as you shall eat this bread, and drink the chalice, you shall show the death of the Lord, until he come."},
+    {id:"gospel",label:"Holy Gospel",ref:"John 13:1-15",response:null,text:"Before the festival day of the pasch, Jesus knowing that his hour was come, that he should pass out of this world to the Father: having loved his own who were in the world, he loved them unto the end. He riseth from supper, and layeth aside his garments, and having taken a towel, girded himself. He putteth water into a basin, and began to wash the feet of the disciples. He cometh therefore to Simon Peter. And Peter saith to him: Lord, dost thou wash my feet? Jesus answered: What I do thou knowest not now; but thou shalt know hereafter. Peter saith to him: Thou shalt never wash my feet. Jesus answered him: If I wash thee not, thou shalt have no part with me. If then I being your Lord and Master, have washed your feet; you also ought to wash one another feet. For I have given you an example, that as I have done to you, so you do also."}
+   ],reflection:"The night before he dies, Jesus kneels and washes his disciples' feet. This is what his lordship looks like.",takeaway:"Let Christ wash you tonight. Then go and wash others.",discuss:["What is the hardest service for you — the kind that costs dignity?"],ccc:"CCC 1337-1344"},
+  {short:"Fri",full:"Friday, 3 April 2026",season:"Good Friday",colour:"Red",saint:"Good Friday",solemnity:true,
+   readings:[
+    {id:"first",label:"First Reading",ref:"Isaiah 52:13-53:12",response:null,text:"Behold, my servant shall understand, he shall be exalted, and extolled, and shall be exceeding high. Who hath believed our report? and to whom is the arm of the Lord revealed? He shall grow up as a tender plant before him, and as a root out of a thirsty ground: there is no beauty in him, nor comeliness: despised, and the most abject of men, a man of sorrows, and acquainted with infirmity. Surely he hath borne our infirmities and carried our sorrows. But he was wounded for our iniquities, he was bruised for our sins: the chastisement of our peace was upon him, and by his bruises we are healed. All we like sheep have gone astray, every one hath turned aside into his own way: and the Lord hath laid on him the iniquity of us all."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 31:2,6,12-13,15-17,25",response:"Father, into your hands I commend my spirit.",text:"In thee, O Lord, I have hoped, let me never be confounded: deliver me in thy justice. Into thy hands I commend my spirit: thou hast redeemed me, O Lord, the God of truth. I am become a reproach among all my enemies. They that saw me without fled from me. I am forgotten as one dead from the heart. But I have put my trust in thee, O Lord: I said: Thou art my God. My lots are in thy hands. Deliver me out of the hands of my enemies. Make thy face to shine upon thy servant; save me in thy mercy."},
+    {id:"second",label:"Second Reading",ref:"Hebrews 4:14-16; 5:7-9",response:null,text:"Having therefore a great high priest that hath passed into the heavens, Jesus the Son of God: let us hold fast our confession. For we have not a high priest who cannot have compassion on our infirmities: but one tempted in all things like as we are, without sin. Let us go therefore with confidence to the throne of grace: that we may obtain mercy, and find grace in seasonable aid. Who in the days of his flesh, with a strong cry and tears, offering up prayers and supplications to him that was able to save him from death, was heard for his reverence."},
+    {id:"gospel",label:"The Passion of Our Lord",ref:"John 18:1-19:42",response:null,text:"Jesus went forth with his disciples over the brook Cedron, where there was a garden. And Judas also, who betrayed him, knew the place. Jesus therefore, knowing all things that should come upon him, went forth: Whom seek ye? They answered him: Jesus of Nazareth. Jesus saith to them: I am he. Jesus answered Pilate: Thou sayest that I am a king. For this was I born, and for this came I into the world; that I should give testimony to the truth. Every one that is of the truth, heareth my voice. Then therefore, Pilate took Jesus, and scourged him. And the soldiers platting a crown of thorns, put it upon his head. Now Jesus bearing his own cross, went forth to that place which is called Calvary. When Jesus therefore had taken the vinegar, he said: It is consummated. And bowing his head, he gave up the ghost. After these things, Joseph of Arimathea besought Pilate that he might take away the body of Jesus. And Pilate gave leave. He came therefore, and took the body of Jesus."}
+   ],reflection:"Good Friday. The Word through whom all things were made is nailed to two pieces of wood. This is the price of love freely paid.",takeaway:"Venerate the Cross today. Not as a symbol but as the instrument of your redemption.",discuss:["Isaiah says he was wounded for our iniquities. What specific wounds of yours did he carry?"],ccc:"CCC 612-623"},
+  {short:"Sat",full:"Saturday, 4 April 2026",season:"Holy Saturday — Easter Vigil",colour:"White",saint:"Holy Saturday",solemnity:true,
+   readings:[
+    {id:"first",label:"Easter Vigil Reading",ref:"Genesis 1:1-2:2",response:null,text:"In the beginning God created heaven, and earth. And the earth was void and empty, and darkness was upon the face of the deep; and the spirit of God moved over the waters. And God said: Be light made. And light was made. And God saw the light that it was good; and he divided the light from the darkness. And he called the light Day, and the darkness Night; and there was evening and morning one day. God made the firmament, and divided the waters. And God called the firmament, Heaven. And God said: Let the earth bring forth the green herb, and such as may seed, and the fruit tree yielding fruit after its kind. And God saw that it was good."},
+    {id:"psalm",label:"Responsorial Psalm",ref:"Psalm 118:1-2,16-17,22-23",response:"This is the day the Lord has made; let us rejoice and be glad.",text:"Give praise to the Lord, for he is good: for his mercy endureth for ever. Let Israel now say, that he is good: that his mercy endureth for ever. The right hand of the Lord hath wrought strength: the right hand of the Lord hath exalted me. I shall not die, but live: and shall declare the works of the Lord. The stone which the builders rejected; the same is become the head of the corner. This is the Lord doing: and it is wonderful in our eyes."},
+    {id:"second",label:"Second Reading",ref:"Romans 6:3-11",response:null,text:"Know you not that all we, who are baptized in Christ Jesus, are baptized in his death? For we are buried together with him by baptism into death; that as Christ is risen from the dead by the glory of the Father, so we also may walk in newness of life. Now if we be dead with Christ, we believe that we shall live also together with Christ. For in that he died to sin, he died once; but in that he liveth, he liveth unto God: so do you also reckon, that you are dead to sin, but alive unto God, in Christ Jesus our Lord."},
+    {id:"gospel",label:"Easter Gospel",ref:"Luke 24:1-12",response:null,text:"And on the first day of the week, very early in the morning, they came to the sepulchre, bringing the spices which they had prepared. And they found the stone rolled back from the sepulchre. And going in, they found not the body of the Lord Jesus. And it came to pass, as they were astonished in their mind at this, behold, two men stood by them, in shining apparel. And they said unto them: Why seek you the living with the dead? He is not here, but is risen. Remember how he spoke unto you, when he was yet in Galilee. And going back from the sepulchre, they told all these things to the eleven, and to all the rest. But Peter rising up, ran to the sepulchre, and stooping down, he saw the linen cloths laid by themselves; and went away wondering at that which was come to pass."}
+   ],reflection:"The Easter Vigil begins in darkness. The new fire is lit. And then: He is not here, but is risen.",takeaway:"You were buried with him. You rose with him. Live like it.",discuss:["Why seek the living among the dead? Where in your life are you still looking for life in dead places?"],ccc:"CCC 638-655"}
+]
 
 const SAINTS={
   turibius:{init:"T",rank:"Bishop · Confessor",bio:"Turibius of Mogrovejo (1538–1606) was appointed Archbishop of Lima as a layman and became one of the great missionary bishops of the Americas, travelling thousands of miles on horseback to bring the sacraments to indigenous peoples.",patronage:"Patron of Latin American bishops and the indigenous peoples of the Americas",prayer:"St. Turibius, apostle to the forgotten, pray for us. Give us your perseverance and your tenderness for the poor. Amen."},
@@ -1016,6 +1101,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     if(ok) console.log('Live Catholic news loaded');
   });
   buildDayStrip();
+  buildDaySidebar();
   buildReadingTabs(curDay);
   renderDay(curDay);
   buildWeekList();
@@ -1032,6 +1118,9 @@ window.addEventListener('DOMContentLoaded',()=>{
   buildStoreGrid();
   buildQAContent();
   buildDepthCards();
+  buildSidebar();
+  buildOfficeHours();
+  buildAboutFeatures();
   // Fetch live readings from Universalis (auto-updates daily)
   fetchUniversalisReadings().then(ok => {
     if(ok) console.log('Live readings loaded from Universalis');
@@ -1197,7 +1286,7 @@ function handleNewsClick(){showPage('news');}
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  const pageOrder=['today','week','mass','live','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa'];
+  const pageOrder=['today','week','mass','live','office','adoration','community','children','formation','podcasts','seeker','vocations','news','articles','library','store','qa','about'];
   const idx=pageOrder.indexOf(id);
   document.querySelectorAll('.nav-tab').forEach((b,i)=>b.classList.toggle('active',i===idx));
   document.querySelectorAll('.bn-btn').forEach((b,i)=>{
@@ -1209,6 +1298,22 @@ function showPage(id){
 }
 
 /* ── DAY STRIP ─────────────────────────────────────────────────────── */
+function buildDaySidebar(){
+  const el = document.getElementById('day-strip-sidebar');
+  if(!el) return;
+  const litEl = document.getElementById('sidebar-liturgy');
+  const d = DAYS[curDay];
+  if(litEl && d) litEl.textContent = d.season + ' · Colour: ' + (d.colour||'Green');
+  el.innerHTML = DAYS.map((day,i) => `
+    <div onclick="selectDay(${i})" style="padding:.35rem .5rem;border-radius:5px;cursor:pointer;
+      background:${i===curDay?'var(--cr)':'transparent'};margin-bottom:.2rem;
+      border:1px solid ${i===curDay?'var(--cr)':'var(--vs)'}">
+      <div style="font-size:.65rem;font-family:'Cinzel',serif;
+        color:${i===curDay?'rgba(232,200,112,.9)':'var(--if)'}">${day.short}</div>
+      <div style="font-size:.7rem;color:${i===curDay?'#fff':'var(--ink)'};
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${day.saint||day.season}</div>
+    </div>`).join('');
+}
 function buildDayStrip(){
   document.getElementById('day-strip').innerHTML=DAYS.map((d,i)=>`
     <button class="dp${i===curDay?' active':''}" onclick="switchDay(${i})">
@@ -1216,7 +1321,8 @@ function buildDayStrip(){
       <span class="ds">${d.saint}</span>
     </button>`).join('');
 }
-function switchDay(i){curDay=i;buildDayStrip();buildReadingTabs(i);renderDay(i);window.scrollTo(0,0);if(isSpeaking)ttsStop();}
+function switchDay(i){
+  setTimeout(buildSidebar, 50);curDay=i;buildDayStrip();buildReadingTabs(i);renderDay(i);window.scrollTo(0,0);if(isSpeaking)ttsStop();}
 
 /* ── VIDEO PLAYER ──────────────────────────────────────────────────── */
 function buildReadingTabs(di){
@@ -1229,6 +1335,7 @@ function buildReadingTabs(di){
   selectReading(0);
 }
 function selectReading(i){
+  setTimeout(buildSidebar, 50);
   curReading=i;
   stopProg();progPct=0;
   document.getElementById('prog-fill').style.width='0%';
@@ -1333,6 +1440,45 @@ function buildMassAcc(){
 }
 
 /* ── LIVE STREAMS ──────────────────────────────────────────────────── */
+function buildAdorationGrid(){
+  const grid = document.getElementById('adoration-grid');
+  if(!grid) return;
+  const streams = [
+    {title:"EWTN Perpetual Adoration Chapel",
+     sub:"24/7 Eucharistic adoration — EWTN, Alabama",
+     icon:"🕯", url:"https://www.ewtn.com/tv/watch-live"},
+    {title:"EWTN Polska — Adoracja z Niepokalanowa",
+     sub:"Live adoration from the Shrine of Niepokalanow, Poland",
+     icon:"📿", url:"https://www.youtube.com/@EWTNPolska"},
+    {title:"Perpetual Adoration — St. Benedict's Melbourne",
+     sub:"Perpetual 24/7 Eucharistic adoration from Melbourne, Australia",
+     icon:"✝", url:"https://www.youtube.com/@StBenedictsMelbourne"},
+    {title:"Perpetual Adoration Prayer Mission",
+     sub:"24/7 Eucharistic adoration prayer mission",
+     icon:"🙏", url:"https://www.youtube.com/@PerpetualAdorationMission"},
+    {title:"Vatican — St. Peter's Basilica",
+     sub:"Live from the heart of the Church",
+     icon:"🏛", url:"https://www.vaticannews.va/en/church/live.html"},
+    {title:"Knock Shrine — Ireland",
+     sub:"Adoration from Ireland's national Marian shrine",
+     icon:"🍀", url:"https://www.knockshrine.ie/live"},
+  ];
+  grid.innerHTML = streams.map(s => `
+    <div class="stream-card" onclick="window.open('${s.url}','_blank')" style="cursor:pointer">
+      <div class="stream-thumb">
+        <div class="stream-live-badge">● LIVE</div>
+        <div class="stream-icon">${s.icon}</div>
+      </div>
+      <div class="stream-info">
+        <div class="stream-title">${s.title}</div>
+        <div class="stream-source">${s.sub}</div>
+        <button class="stream-btn" onclick="event.stopPropagation();window.open('${s.url}','_blank')">
+          Watch on YouTube →
+        </button>
+      </div>
+    </div>`).join('');
+}
+
 function buildStreamGrid(){
   const grid = document.getElementById('stream-grid');
   if(!grid) return;
@@ -1700,6 +1846,84 @@ function buildStoreGrid(){
 
   container.innerHTML = html;
 }
+function buildOfficeHours(){
+  const el = document.getElementById('office-hours-list');
+  if(!el) return;
+  const hours = [
+    {icon:"🌙",name:"Office of Readings",latin:"Matutinum",time:"Any time",
+     desc:"A longer Scripture reading and patristic commentary. The monastic heart of the Office, now open to all.",
+     psalm:"Psalm 94 — Come, ring out our joy to the Lord",
+     reading:"From the day's Scripture and a Church Father"},
+    {icon:"🌅",name:"Morning Prayer",latin:"Lauds",time:"On waking",
+     desc:"The Church greeting to the new day. Opens with psalms of praise before the day makes its demands.",
+     psalm:"Psalm 62 — O God, you are my God; I seek you",
+     reading:"A short Scripture verse"},
+    {icon:"☀️",name:"Daytime Prayer",latin:"Terce · Sext · None",time:"Mid-morning · Midday · Mid-afternoon",
+     desc:"Three brief pauses of five minutes each through the working day. Every hour brought before God.",
+     psalm:"Psalm 119 — selections",reading:"A verse fitting the hour"},
+    {icon:"🌆",name:"Evening Prayer",latin:"Vespers",time:"Evening",
+     desc:"The great prayer of thanksgiving. The Magnificat — Our Lady's song of praise — is sung at Vespers every day.",
+     psalm:"Psalm 141 — Let my prayer arise like incense",
+     reading:"1 Peter 5:8-9 — Be sober, be watchful"},
+    {icon:"🌙",name:"Night Prayer",latin:"Compline",time:"Before sleep",
+     desc:"The final prayer of the day. Brief, calm, beautiful. Ends with the Salve Regina.",
+     psalm:"Psalm 90 — He who dwells in the shelter of the Most High",
+     reading:"Into your hands, Lord, I commend my spirit"},
+  ];
+  el.innerHTML = hours.map((h,i) => `
+    <div class="acc-item" id="oh${i}">
+      <div class="acc-head" onclick="tog('oh${i}')">
+        <span style="font-size:1.2rem;min-width:2rem">${h.icon}</span>
+        <div style="flex:1">
+          <div class="acc-title">${h.name}
+            <span style="font-size:.62rem;color:var(--if);font-style:italic;margin-left:.5rem">${h.latin}</span>
+          </div>
+          <div style="font-size:.62rem;color:var(--gld);letter-spacing:.07em;text-transform:uppercase">${h.time}</div>
+        </div>
+        <span class="acc-arr">›</span>
+      </div>
+      <div class="acc-body">
+        <p>${h.desc}</p>
+        <div class="acc-scripture"><strong>Psalm:</strong> ${h.psalm}</div>
+        <div class="acc-scripture" style="margin-top:.5rem"><strong>Reading:</strong> ${h.reading}</div>
+        <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="sbtn" onclick="window.open('https://www.ibreviary.org','_blank')">Full text on iBreviary →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function buildAboutFeatures(){
+  const el = document.getElementById('about-features-grid');
+  if(!el) return;
+  const features = [
+    {icon:"📖",name:"Daily Readings",desc:"First Reading, Psalm, Gospel"},
+    {icon:"📅",name:"Week Narrative",desc:"7 days as one story"},
+    {icon:"✝",name:"The Holy Mass",desc:"14 parts explained"},
+    {icon:"📺",name:"Live Mass",desc:"6 global streams"},
+    {icon:"🕯",name:"Adoration",desc:"Perpetual streaming"},
+    {icon:"🙏",name:"Divine Office",desc:"All 5 hours"},
+    {icon:"👥",name:"Community",desc:"Testimonies & prayer"},
+    {icon:"👶",name:"Children",desc:"Stories ages 3-16"},
+    {icon:"📚",name:"Formation",desc:"5 complete paths"},
+    {icon:"🎙",name:"Podcasts",desc:"Catholic audio hub"},
+    {icon:"❓",name:"Seeker Journey",desc:"Honest answers"},
+    {icon:"⛪",name:"Vocations",desc:"Discernment tools"},
+    {icon:"📰",name:"News Room",desc:"Live Catholic news"},
+    {icon:"✍",name:"Articles",desc:"Catholic writing"},
+    {icon:"📜",name:"Library",desc:"Typology & catechism"},
+    {icon:"🛍",name:"Store",desc:"Books & sacramentals"},
+    {icon:"💬",name:"Q&A",desc:"Magisterial answers"},
+  ];
+  el.innerHTML = features.map(f => `
+    <div style="background:#fff;border:1px solid var(--vs);border-radius:var(--r);padding:.85rem;
+      display:flex;flex-direction:column;gap:.25rem">
+      <span style="font-size:1.3rem">${f.icon}</span>
+      <div style="font-family:'Cinzel',serif;font-size:.78rem;color:var(--ink);font-weight:bold">${f.name}</div>
+      <div style="font-size:.75rem;color:var(--if)">${f.desc}</div>
+    </div>`).join('');
+}
+
 function buildQAContent(){
   const qas=[
     {c:"Doctrine",q:"Is the Pope infallible about everything he says?",a:"<p>No. Papal infallibility is precisely defined (Vatican I, 1870) — it applies only when the Pope speaks <em>ex cathedra</em>, deliberately defining a doctrine of faith or morals as binding on the whole Church. This has happened very rarely: the Immaculate Conception (1854) and the Assumption of Our Lady (1950) are the clearest modern examples. Most of what the Pope says does not qualify, though it deserves the respect owed to the Vicar of Christ.</p>"},
@@ -1810,6 +2034,14 @@ document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFulls
 const VID_BGS=['linear-gradient(160deg,#1a0800,#3d0808 40%,#1a0400)','linear-gradient(160deg,#0a0d1a,#1a0d2d 40%,#050510)','linear-gradient(160deg,#1a0800,#2d0808 40%,#0d0300)','linear-gradient(160deg,#0d1a0d,#0a2d0a 40%,#030d03)'];
 function updateVideoBg(i){const bg=document.getElementById('vid-bg-inner');if(bg)bg.style.background=VID_BGS[i]||VID_BGS[0];}
 
+function buildSidebar(){
+  const sr=document.getElementById('sidebar-readings');
+  const sw=document.getElementById('sidebar-week');
+  if(!sr||!sw)return;
+  const d=DAYS[curDay];if(!d)return;
+  sr.innerHTML=(d.readings||[]).map((r,i)=>`<div onclick="selectReading(${i})" style="padding:.5rem .7rem;cursor:pointer;border-bottom:1px solid rgba(201,150,58,.08);background:${i===curReading?'rgba(201,150,58,.12)':'transparent'}"><div style="font-family:'Cinzel',serif;font-size:.58rem;color:rgba(201,150,58,.65);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px">${r.label||r.id||''}</div><div style="font-size:.73rem;color:rgba(245,232,204,.75);line-height:1.3">${r.ref||''}</div></div>`).join('');
+  sw.innerHTML=DAYS.map((day,i)=>`<div onclick="switchDay(${i})" style="padding:.42rem .7rem;cursor:pointer;border-bottom:1px solid rgba(201,150,58,.06);background:${i===curDay?'rgba(201,150,58,.12)':'transparent'}"><div style="font-family:'Cinzel',serif;font-size:.58rem;color:rgba(201,150,58,.5);letter-spacing:.06em;text-transform:uppercase">${day.short||''}</div><div style="font-size:.7rem;color:rgba(245,232,204,.5)">${(day.saint||day.season||'').substring(0,26)}</div></div>`).join('');
+}
 function openCurrentStream(){
   const btn = document.getElementById('sv-watch-btn');
   if(btn) btn.click();
@@ -1850,6 +2082,7 @@ function doShare(){
   else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!'));
   else alert('Share: '+window.location.href);
 }
+
 
 
 </script>
